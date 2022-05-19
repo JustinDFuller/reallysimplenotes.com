@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="It's notes, and they're simple."
+    />
+    <title>Really Simple Notes</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      ul,
+      li,
+      div,
+      header,
+      div {
+        width: 100%;
+        display: block;
+        margin: 0;
+        padding: 0;
+        border: 0;
+      }
+
+      header {
+        padding: 10px;
+        border-bottom: 3px solid black;
+      }
+
+      header > h1 {
+        background: black;
+        color: white;
+        font-weight: bold;
+        width: 200px;
+        font-size: 20px;
+        padding: 10px;
+        text-align: center;
+      }
+
+      html,
+      body {
+        padding: 0;
+        margin: 0;
+        height: 100vh;
+        width: 100vw;
+      }
+
+      #container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+      }
+
+      #sidebar {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 20%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #button-container {
+        width: 100%;
+      }
+
+      #sidebar button {
+        border: 0;
+        padding: 10px;
+        cursor: pointer;
+        background: black;
+        color: white;
+        border-radius: 6px;
+        width: 80%;
+        margin: auto;
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      #sidebar > button:hover {
+        background: #ddd;
+      }
+
+      #files {
+        margin: 0;
+        padding: 0;
+      }
+
+      #files > li {
+        width: 100%;
+        padding: 10px;
+      }
+
+      #files > .active {
+        background: black;
+        color: white;
+      }
+
+      #files > li:hover {
+        background: #ddd;
+        cursor: pointer;
+      }
+
+      #editor {
+        display: inline-block;
+        width: 80%;
+        height: 100%;
+        margin: 0;
+        padding: 20px;
+        border: 0;
+        border-left: 3px solid black;
+      }
+
+    </style>
+    <script>
+      function Note(note = {}) {
+        return {
+          title() {
+            return note.Data.split("\n")[0] || "New Note";
+          },
+          ID() {
+            return note.ID;
+          },
+          isActive() {
+            return note.Active;
+          },
+          content() {
+            return note.Data;
+          },
+          toJSON() {
+            return JSON.stringify(note);
+          },
+          update(data) {
+            return Note({
+              ...note,
+              Data: data
+            });
+          },
+          setActive(active) {
+            return Note({
+              ...note,
+              Active: active
+            });
+          }
+        };
+      }
+
+      function LocalStorageNotes(data = []) {
+        return {
+          get(note) {
+            return data.find((n) => n.ID() === note.ID());
+          },
+          save(note) {
+            localStorage.setItem(note.ID(), note.toJSON());
+          },
+          set(note) {
+            this.save(note);
+            return LocalStorageNotes(
+              data.map((n) => (n.ID() === note.ID() ? note : n))
+            );
+          },
+          init() {
+            ids = JSON.parse(localStorage.getItem("IDS")) || [];
+
+            return LocalStorageNotes(
+              ids.map((id) => Note(JSON.parse(localStorage.getItem(id))))
+            );
+          },
+          list() {
+            return data;
+          },
+          nextID() {
+            return data.length + 1 || 1;
+          },
+          add(note) {
+            const updated = [...data, note];
+            const ids = updated.map((n) => n.ID());
+            localStorage.setItem("IDS", JSON.stringify(ids));
+            this.save(note);
+            return LocalStorageNotes(updated);
+          },
+          activate(note) {
+            const updated = data.map(function (n) {
+              if (n.ID() === note.ID()) {
+                return n.setActive(true);
+              }
+              return n.setActive(false);
+            });
+
+            updated.forEach((n) => this.save(n));
+
+            return LocalStorageNotes(updated);
+          },
+          getActive() {
+            return data.find((n) => n.isActive());
+          }
+        };
+      }
+
+      function Editor(element = document.getElementById("editor")) {
+        return {
+          setContent(content) {
+            element.value = content;
+          },
+          onChange(fn) {
+            element.addEventListener("input", fn);
+          }
+        };
+      }
+
+      function Files(element = document.getElementById("files")) {
+        return {
+          reset() {
+            while (element.firstChild) {
+              element.removeChild(element.firstChild);
+            }
+          },
+          add(file) {
+            element.appendChild(file.element());
+          }
+        };
+      }
+
+      function File(element = document.createElement("li")) {
+        return {
+          setActive() {
+            element.classList.add("active");
+          },
+          setTitle(title) {
+            element.innerHTML = title;
+          },
+          onClick(fn) {
+            element.addEventListener("click", fn);
+          },
+          element() {
+            return element;
+          }
+        };
+      }
+
+      let notes = LocalStorageNotes().init();
+      let editor = Editor();
+      let files = Files();
+
+      editor.onChange(function (e) {
+        notes = notes.set(notes.getActive().update(e.target.value));
+        render();
+      });
+
+      function render() {
+        files.reset();
+
+        for (const note of notes.list()) {
+          const file = File();
+          file.setTitle(note.title());
+
+          if (note.isActive()) {
+            file.setActive();
+            editor.setContent(note.content());
+          }
+
+          file.onClick((e) => {
+            notes = notes.activate(note);
+            render();
+          });
+
+          files.add(file);
+        }
+      }
+
+      document.getElementById("add").addEventListener("click", function (e) {
+        const note = Note({
+          ID: notes.nextID(),
+          Name: "New Note",
+          Data: "",
+          Active: false
+        });
+        notes = notes.add(note);
+
+        render();
+      });
+
+      render();
+
+    </script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="sidebar">
+        <ul id="files"></ul>
+        <div id="#button-container">
+          <button id="add">+ New Note</button>
+        </div>
+      </div>
+      <textarea id="editor"></textarea>
+    </div>
+  </body>
+</html>
