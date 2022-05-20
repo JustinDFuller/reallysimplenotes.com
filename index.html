@@ -10,6 +10,7 @@
       :root {
         --background: #202023;
         --background-hover: #2e2e33;
+        --background-active: #31313b;
         --color: white;
         --color-secondary: #eee;
         --border: #141417;
@@ -87,8 +88,8 @@
         padding: 10px;
       }
 
-      #files > .active {
-        background: var(--background);
+      #files .active {
+        background: var(--background-active);
         color: var(--color);
       }
 
@@ -107,6 +108,11 @@
         border-left: 3px solid var(--border);
         background: var(--background);
         color: var(--color);
+      }
+
+      #editor:focus {
+        outline: none;
+        border-left: 3px solid var(--border);
       }
     </style>
   </head>
