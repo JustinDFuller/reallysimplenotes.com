@@ -1,0 +1,12 @@
+runtime: go116
+
+handlers:
+  ## All API requests are prefixed with /v1
+  - url: /v1/.*
+    script: auto
+    secure: always
+
+  - url: /
+    static_files: index.html
+    upload: index\.html
+    secure: always

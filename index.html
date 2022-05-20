@@ -4,10 +4,7 @@
     <meta charset="utf-8" />
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="description"
-      content="It's notes, and they're simple."
-    />
+    <meta name="description" content="It's notes, and they're simple." />
     <title>Really Simple Notes</title>
     <style>
       * {
@@ -115,8 +112,18 @@
         border: 0;
         border-left: 3px solid black;
       }
-
     </style>
+  </head>
+  <body>
+    <div id="container">
+      <div id="sidebar">
+        <ul id="files"></ul>
+        <div id="#button-container">
+          <button id="add">+ New Note</button>
+        </div>
+      </div>
+      <textarea id="editor"></textarea>
+    </div>
     <script>
       function Note(note = {}) {
         return {
@@ -138,15 +145,15 @@
           update(data) {
             return Note({
               ...note,
-              Data: data
+              Data: data,
             });
           },
           setActive(active) {
             return Note({
               ...note,
-              Active: active
+              Active: active,
             });
-          }
+          },
         };
       }
 
@@ -198,7 +205,7 @@
           },
           getActive() {
             return data.find((n) => n.isActive());
-          }
+          },
         };
       }
 
@@ -209,7 +216,7 @@
           },
           onChange(fn) {
             element.addEventListener("input", fn);
-          }
+          },
         };
       }
 
@@ -222,7 +229,7 @@
           },
           add(file) {
             element.appendChild(file.element());
-          }
+          },
         };
       }
 
@@ -239,7 +246,7 @@
           },
           element() {
             return element;
-          }
+          },
         };
       }
 
@@ -278,7 +285,7 @@
           ID: notes.nextID(),
           Name: "New Note",
           Data: "",
-          Active: false
+          Active: false,
         });
         notes = notes.add(note);
 
@@ -286,18 +293,6 @@
       });
 
       render();
-
     </script>
-  </head>
-  <body>
-    <div id="container">
-      <div id="sidebar">
-        <ul id="files"></ul>
-        <div id="#button-container">
-          <button id="add">+ New Note</button>
-        </div>
-      </div>
-      <textarea id="editor"></textarea>
-    </div>
   </body>
 </html>
