@@ -7,6 +7,14 @@
     <meta name="description" content="It's notes, and they're simple." />
     <title>Really Simple Notes</title>
     <style>
+      :root {
+        --background: #202023;
+        --background-hover: #2e2e33;
+        --color: white;
+        --color-secondary: #eee;
+        --border: #141417;
+      }
+
       * {
         box-sizing: border-box;
       }
@@ -14,7 +22,6 @@
       ul,
       li,
       div,
-      header,
       div {
         width: 100%;
         display: block;
@@ -23,27 +30,14 @@
         border: 0;
       }
 
-      header {
-        padding: 10px;
-        border-bottom: 3px solid black;
-      }
-
-      header > h1 {
-        background: black;
-        color: white;
-        font-weight: bold;
-        width: 200px;
-        font-size: 20px;
-        padding: 10px;
-        text-align: center;
-      }
-
       html,
       body {
         padding: 0;
         margin: 0;
         height: 100vh;
         width: 100vw;
+        background: var(--background);
+        color: var(--color);
       }
 
       #container {
@@ -70,8 +64,8 @@
         border: 0;
         padding: 10px;
         cursor: pointer;
-        background: black;
-        color: white;
+        background: var(--background);
+        color: var(--color-secondary);
         border-radius: 6px;
         width: 80%;
         margin: auto;
@@ -79,8 +73,8 @@
         margin-bottom: 5px;
       }
 
-      #sidebar > button:hover {
-        background: #ddd;
+      #sidebar button:hover {
+        background: var(--background-hover);
       }
 
       #files {
@@ -94,12 +88,12 @@
       }
 
       #files > .active {
-        background: black;
-        color: white;
+        background: var(--background);
+        color: var(--color);
       }
 
       #files > li:hover {
-        background: #ddd;
+        background: var(--background-hover);
         cursor: pointer;
       }
 
@@ -110,7 +104,9 @@
         margin: 0;
         padding: 20px;
         border: 0;
-        border-left: 3px solid black;
+        border-left: 3px solid var(--border);
+        background: var(--background);
+        color: var(--color);
       }
     </style>
   </head>
