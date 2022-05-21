@@ -14,7 +14,8 @@
         --color: white;
         --color-secondary: #cfd0d3;
         --border: #141417;
-        --font-size: 18px;
+        --font-size: 21px;
+        --line-height: 36px;
       }
 
       * {
@@ -91,7 +92,7 @@
 
       #files > li {
         width: 100%;
-        padding: 10px;
+        padding: 14px;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -108,6 +109,7 @@
       }
 
       #editor {
+        line-height: var(--line-height);
         resize: none;
         display: inline-block;
         width: 80%;
@@ -118,7 +120,7 @@
         background: var(--background);
         color: var(--color);
         font-size: var(--font-size);
-        padding: 40px calc(100px + 10%);
+        padding: 40px calc(100px + 13%);
       }
 
       #editor:focus {
@@ -140,7 +142,7 @@
       function Note(note = {}) {
         return {
           title() {
-            return note.Data.split("\n")[0] || "New Note";
+            return note.Data.split("\n")[0].replace("# ", "") || "New Note";
           },
           ID() {
             return note.ID;
