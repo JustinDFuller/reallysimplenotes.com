@@ -35,7 +35,9 @@
 
       html,
       body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+          "Segoe UI Symbol";
         padding: 0;
         margin: 0;
         height: 100vh;
@@ -56,10 +58,38 @@
         flex-direction: column;
         justify-content: space-between;
         width: 20%;
-        height: 100%;
+        height: 94vh;
         margin: 0;
         padding: 0;
         border-right: 3px solid var(--border);
+        margin-top: 55px;
+      }
+
+      #sidebar-icon {
+        cursor: pointer;
+        border-radius: 6px;
+        background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNzUycHQiIGhlaWdodD0iNzUycHQiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDc1MiA3NTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiA8ZyBmaWxsPSIjY2ZjZmQyIj4KICA8cGF0aCBkPSJtMzA0LjMzIDIwOS40OGMtMTAuMTk5IDAtMTguNDE4IDguOTYwOS0xOC40MTggMjAuMDYydjQwLjM5MWMwIDExLjA5OCA4LjIxODggMjAuMDcgMTguNDE4IDIwLjA3aDI2My4xOGMxMC4xOTkgMCAxOC40MTgtOC45NzI3IDE4LjQxOC0yMC4wN3YtNDAuMzkxYzAtMTEuMTAyLTguMjIyNy0yMC4wNjItMTguNDE4LTIwLjA2MnoiLz4KICA8cGF0aCBkPSJtMzA0LjMzIDMzNS45NmMtMTAuMTk5IDAtMTguNDE4IDguOTQxNC0xOC40MTggMjAuMDd2NDAuMzcxYzAgMTEuMTI5IDguMjE4OCAyMC4wNTkgMTguNDE4IDIwLjA1OWgyNjMuMThjMTAuMTk5IDAgMTguNDE4LTguOTI5NyAxOC40MTgtMjAuMDU5di00MC4zNzFjMC0xMS4xMjktOC4yMjI3LTIwLjA3LTE4LjQxOC0yMC4wN3oiLz4KICA8cGF0aCBkPSJtMzA0LjMzIDQ2Mi40MWMtMTAuMTk5IDAtMTguNDE4IDguOTYwOS0xOC40MTggMjAuMDYydjQwLjM3MWMwIDExLjEyNSA4LjIxODggMjAuMDYyIDE4LjQxOCAyMC4wNjJoMjYzLjE4YzEwLjE5OSAwIDE4LjQxOC04Ljk0MTQgMTguNDE4LTIwLjA2MnYtNDAuMzcxYzAtMTEuMDk4LTguMjIyNy0yMC4wNjItMTguNDE4LTIwLjA2MnoiLz4KICA8cGF0aCBkPSJtMjA3LjU5IDQ2Mi40MWMtMTAuNjYgMC0yMC45MDYgNC4yNDYxLTI4LjQ3NyAxMS43ODUtNy41MzUyIDcuNTcwMy0xMS43NzcgMTcuNzg5LTExLjc3NyAyOC40NzMgMCAxMC42OTUgNC4yNDYxIDIwLjkxOCAxMS44MDkgMjguNDQ5IDcuNTQzIDcuNTY2NCAxNy43ODUgMTEuODA5IDI4LjQ0OSAxMS43ODUgMjIuMjI3IDAgNDAuMjYyLTE4LjAwNCA0MC4yNjItNDAuMjM0IDAtMTAuNjg0LTQuMjQ2MS0yMC45MDItMTEuNzgxLTI4LjQ3My03LjU3ODEtNy41MzkxLTE3Ljc5Ny0xMS43ODUtMjguNDg0LTExLjc4NXoiLz4KICA8cGF0aCBkPSJtMjA3LjU5IDMzNS45NmMtMTAuNjYgMC0yMC45MDYgNC4yMjY2LTI4LjQ3NyAxMS43ODktNy41MzUyIDcuNTM1Mi0xMS43NzcgMTcuNzg1LTExLjc3NyAyOC40NzcgMCAxMC42NTYgNC4yNDYxIDIwLjkxIDExLjgwOSAyOC40NDEgNy41NDMgNy41NDY5IDE3Ljc4NSAxMS43ODUgMjguNDQ5IDExLjc4NSAyMi4yMjcgMCA0MC4yNjItMTggNDAuMjYyLTQwLjIzIDAtMTAuNjk1LTQuMjQ2MS0yMC45MTgtMTEuNzgxLTI4LjQ4LTcuNTc4MS03LjUyNzMtMTcuNzk3LTExLjc4MS0yOC40ODQtMTEuNzgxeiIvPgogIDxwYXRoIGQ9Im0yMDcuNTkgMjA5LjQ4Yy0xMC42NiAwLTIwLjkwNiA0LjI1LTI4LjQ1MyAxMS43ODUtNy41NTg2IDcuNTYyNS0xMS44MDkgMTcuNzgxLTExLjgwOSAyOC40NjkgMCAxMC42NjQgNC4yNSAyMC45MTggMTEuNzc3IDI4LjQ3NyA3LjU3NDIgNy41MzUyIDE3LjgxNiAxMS43ODkgMjguNDggMTEuNzg5IDEwLjY4NCAwIDIwLjkwMi00LjI1MzkgMjguNDc3LTExLjgyIDcuNTM1Mi03LjUzNTIgMTEuNzgxLTE3Ljc4NSAxMS43ODEtMjguNDQ5IDAuMDAzOTA2LTIyLjIxOS0xOC4wMjctNDAuMjUtNDAuMjU0LTQwLjI1eiIvPgogPC9nPgo8L3N2Zz4K);
+        background-size: cover;
+        height: 28px;
+        width: 28px;
+        background-color: var(--background-hover);
+        margin-right: 8px;
+        position: relative;
+        bottom: 1px;
+      }
+
+      #sidebar-title {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        padding-left: 14px;
+        padding-top: 14px;
+        padding-bottom: 14px;
+        color: var(--color-secondary);
+        background: var(--background);
       }
 
       #button-container {
@@ -85,8 +115,7 @@
 
       #files {
         margin: 0;
-        padding: 0;
-        max-height: 93vh;
+        max-height: 89vh;
         overflow: scroll;
       }
 
@@ -114,22 +143,50 @@
         display: inline-block;
         width: 80%;
         border-left: 3px solid var(--border);
-        height: 100%;        
+        height: 100%;
         margin: 0 auto;
         border: 0;
         background: var(--background);
         color: var(--color);
         font-size: var(--font-size);
-        padding: 40px calc(100px + 13%);
+        padding: 65px calc(100px + 10%) 40px;
       }
 
       #editor:focus {
         outline: none;
       }
+
+      @media screen and (max-width: 1000px) {
+        #sidebar {
+          display: none;
+        }
+
+        #sidebar.show-mobile {
+          display: block;
+        }
+
+        #editor.hide-mobile {
+          display: none;
+        }
+
+        #sidebar,
+        #editor {
+          width: 100%;
+        }
+
+        #editor {
+          padding-left: 14px;
+          padding-right: 14px;
+        }
+      }
     </style>
   </head>
   <body>
     <div id="container">
+      <strong id="sidebar-title">
+        <span id="sidebar-icon"></span>
+        Notes
+      </strong>
       <div id="sidebar">
         <ul id="files"></ul>
         <div id="button-container">
@@ -223,6 +280,14 @@
         };
       }
 
+      function Sidebar(element = document.getElementById("sidebar")) {
+        return {
+          toggle() {
+            element.classList.toggle("show-mobile")
+          },
+        };
+      }
+
       function Editor(element = document.getElementById("editor")) {
         return {
           setContent(content) {
@@ -233,6 +298,9 @@
           },
           focus() {
             element.focus();
+          },
+          toggle() {
+            element.classList.toggle("hide-mobile");
           },
         };
       }
@@ -270,6 +338,7 @@
       let notes = LocalStorageNotes().init();
       let editor = Editor();
       let files = Files();
+      let sidebar = Sidebar();
 
       editor.onChange(function (e) {
         notes = notes.set(notes.getActive().update(e.target.value));
@@ -290,6 +359,8 @@
 
           file.onClick((e) => {
             notes = notes.activate(note);
+            sidebar.toggle();
+            editor.toggle();
             render();
           });
 
@@ -298,6 +369,13 @@
 
         editor.focus();
       }
+
+      document
+        .getElementById("sidebar-icon")
+        .addEventListener("click", function (e) {
+          sidebar.toggle();
+          editor.toggle();
+        });
 
       document.getElementById("add").addEventListener("click", function (e) {
         const note = Note({
