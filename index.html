@@ -231,6 +231,9 @@
           onChange(fn) {
             element.addEventListener("input", fn);
           },
+          focus() {
+            element.focus();
+          },
         };
       }
 
@@ -292,6 +295,8 @@
 
           files.add(file);
         }
+
+        editor.focus();
       }
 
       document.getElementById("add").addEventListener("click", function (e) {
