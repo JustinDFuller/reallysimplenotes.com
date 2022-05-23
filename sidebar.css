@@ -7,7 +7,7 @@
   margin: 0;
   padding: 0;
   border-right: 3px solid var(--border);
-  margin-top: 55px;
+  padding-top: 55px;
 }
 
 #sidebar-icon {
@@ -27,7 +27,6 @@
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
   display: flex;
   align-items: center;
   padding-left: 14px;
