@@ -1,0 +1,29 @@
+#editor {
+  line-height: var(--line-height);
+  resize: none;
+  display: inline-block;
+  height: 100%;
+  margin: 0 auto;
+  border: 0;
+  background: var(--background);
+  color: var(--color);
+  font-size: var(--font-size);
+  padding: 65px 0 40px;
+  width: 750px;
+}
+
+#editor:focus {
+  outline: none;
+}
+
+@media screen and (max-width: 1075px) {
+  #editor.hide-mobile {
+    display: none;
+  }
+
+  #editor {
+    width: 100%;
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+}

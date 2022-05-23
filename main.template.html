@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="It's notes, and they're simple." />
+    <title>Really Simple Notes</title>
+    <style>
+      {{ printf "%s" .CSS }} 
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <strong id="sidebar-title">
+        <span id="sidebar-icon"></span>
+        Notes
+      </strong>
+      <div id="sidebar">
+        <ul id="files"></ul>
+        <div id="button-container">
+          <button id="add">+ New Note</button>
+        </div>
+      </div>
+      <textarea id="editor" autofocus></textarea>
+    </div>
+    <script>
+      {{ printf "%s" .JS }} 
+    </script>
+  </body>
+</html>

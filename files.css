@@ -1,0 +1,23 @@
+#files {
+  margin: 0;
+  max-height: 89vh;
+  overflow: scroll;
+}
+
+#files > li {
+  width: 100%;
+  padding: 14px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+#files .active {
+  background: var(--background-active);
+  color: var(--color);
+}
+
+#files > li:hover {
+  background: var(--background-hover);
+  cursor: pointer;
+}
