@@ -7,6 +7,6 @@ handlers:
     secure: always
 
   - url: /
-    static_files: index.html
-    upload: index\.html
+    static_files: build.html
+    upload: build\.html
     secure: always

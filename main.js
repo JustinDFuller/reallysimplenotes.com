@@ -6,15 +6,14 @@ let page
 
 function init() {
   page = Page()
-
-  notes = LocalStorageNotes().init();
-  if (notes.isEmpty()) {
-    notes = notes.prefill();
-  }
-
   editor = Editor();
   files = Files();
   sidebar = Sidebar();
+  notes = LocalStorageNotes().init();
+
+  if (notes.isEmpty()) {
+    notes = notes.prefill();
+  }
 
   editor.onChange(function (e) {
     notes = notes.set(notes.getActive().update(e.target.value));

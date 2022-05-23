@@ -1,15 +1,36 @@
+
 function LocalStorageNotes(data = []) {
+  const DEFAULT_DATA = `Welcome to Really Simple Notes!
+
+This notes app is a little different than some you might have used before.
+
+First, you may notice there are no styling options. That's because styling tends to get in the way. You won't find bold, italics, or any other styles. This helps you focus on what matters: writing notes.
+
+But, don't worry, there's a lot you can do with plain text.
+
+What if you want a list?
+* Use an asterisk.
+- Or a hyphen.
+
+What if you have a quote?
+> Use a "greater than" symbol.
+
+When you make changes, it will automatically save in your browser.
+
+Now, go ahead, erase this text and start writing some notes!`;
+
   return {
     isEmpty() {
+      console.log(data, data.length)
       return data.length === 0;
     },
     prefill() {
       const note = Note({
         ID: 1,
         Active: true,
-        Data: "This is your first note.\nErase this text and start typing!",
+        Data: DEFAULT_DATA,
       });
-      this.save(note);
+      this.add(note);
       return LocalStorageNotes([note])
     },
     get(note) {
