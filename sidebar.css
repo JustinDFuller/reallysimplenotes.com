@@ -66,4 +66,9 @@
   #sidebar.show-mobile {
     display: block;
   }
+
+  #sidebar-title {
+    width: 100%;
+    border-bottom: 3px solid var(--border);
+  }
 }

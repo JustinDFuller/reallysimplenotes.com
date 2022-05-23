@@ -1,7 +1,7 @@
 function Page() {
   return {
     sidebarButton() {
-      return document.getElementById("sidebar-icon")
+      return document.getElementById("sidebar-title")
     },
     addButton() {
       return document.getElementById("add")
