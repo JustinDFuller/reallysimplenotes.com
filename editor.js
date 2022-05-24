@@ -12,5 +12,8 @@ function Editor(element = page.editor()) {
     toggle() {
       element.classList.toggle("hide-mobile");
     },
+    onKeyDown(fn) {
+      element.addEventListener("keydown", fn);
+    },
   };
 }

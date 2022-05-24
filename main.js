@@ -20,6 +20,26 @@ function init() {
     render();
   });
 
+  editor.onKeyDown(function (e) {
+    if (e.shiftKey && e.code === "Tab") {
+      e.preventDefault();
+      const prev = this.selectionStart - 1;
+      if (this.value[prev] !== "\t") {
+        return
+      }
+
+      this.value = this.value.substring(0, prev) + this.value.substring(prev + 1);
+      this.selectionStart = this.selectionEnd = prev;
+      notes = notes.set(notes.getActive().update(e.target.value));
+    } else if (e.code === "Tab") {
+      e.preventDefault();
+      const start = this.selectionStart;
+      this.value = this.value.substring(0, start) + "\t" + this.value.substring(this.selectionEnd);
+      this.selectionStart = this.selectionEnd = start + 1;
+      notes = notes.set(notes.getActive().update(e.target.value));
+    }
+  })
+
   page.sidebarButton()
     .addEventListener("click", function (e) {
       sidebar.toggle();
