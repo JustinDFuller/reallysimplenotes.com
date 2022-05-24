@@ -6,6 +6,10 @@ handlers:
     script: auto
     secure: always
 
+  - url: /public
+    static_dir: public
+    secure: always
+
   - url: /
     static_files: build.html
     upload: build\.html
