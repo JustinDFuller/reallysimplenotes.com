@@ -3,7 +3,7 @@
   flex-direction: column;
   justify-content: space-between;
   width: 325px;
-  height: 100vh;
+  height: 100%;
   margin: 0;
   padding: 0;
   border-right: 3px solid var(--border);
@@ -60,6 +60,7 @@
   #sidebar {
     display: none;
     width: 100%;
+    height: calc(100% - 59px);
   }
 
   #sidebar.show-mobile {

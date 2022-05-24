@@ -8,7 +8,7 @@
   background: var(--background);
   color: var(--color);
   font-size: var(--font-size);
-  padding: 65px 0 40px;
+  padding: 65px 0;
   width: 750px;
 }
 
@@ -22,7 +22,11 @@
   }
 
   #editor {
+    height: calc(100% - 59px);
     width: 100%;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    margin-top: 59px;
     padding-left: 14px;
     padding-right: 14px;
   }
