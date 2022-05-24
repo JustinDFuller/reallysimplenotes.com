@@ -10,6 +10,11 @@ handlers:
     static_dir: public
     secure: always
 
+  - url: /service-worker.js
+    static_files: public/service-worker.js
+    upload: public/service-worker.js
+    secure: always
+
   - url: /
     static_files: build.html
     upload: build\.html

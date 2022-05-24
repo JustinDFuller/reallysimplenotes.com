@@ -11,6 +11,10 @@ import (
 )
 
 func main() {
+	http.HandleFunc("/service-worker.js", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./public/service-worker.js")
+	})
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if strings.Contains(r.URL.Path, "/public") {
 			path := fmt.Sprintf(".%s", r.URL.Path)
