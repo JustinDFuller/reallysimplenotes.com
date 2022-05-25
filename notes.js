@@ -21,7 +21,6 @@ Now, go ahead, erase this text and start writing some notes!`;
 
   return {
     isEmpty() {
-      console.log(data, data.length)
       return data.length === 0;
     },
     prefill() {
