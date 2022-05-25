@@ -7,7 +7,7 @@
   background: var(--background);
   color: var(--color);
   font-size: var(--font-size);
-  padding: 65px calc((100vw - 325px - 725px) / 2);
+  padding: 65px calc((100vw - var(--sidebar-width) - var(--editor-width)) / 2);
   width: 100%;
   height: 100%;
 }
@@ -16,19 +16,16 @@
   outline: none;
 }
 
-@media screen and (max-width: 1075px) {
+@media screen and (max-width: 1200px) {
   #editor.hide-mobile {
     display: none;
   }
 
   #editor {
-    height: calc(100% - 59px);
+    height: calc(100% - var(--nav-height));
     width: 100%;
-    padding-top: 14px;
-    padding-bottom: 14px;
-    margin-top: 59px;
-    padding-left: 14px;
-    padding-right: 14px;
+    margin-top: var(--nav-height);
+    padding: var(--small-spacer) var(--medium-spacer);
   }
 }
 
