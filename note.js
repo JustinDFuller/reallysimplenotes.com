@@ -46,5 +46,23 @@ function Note(input) {
     deleted() {
       return note.Deleted;
     },
+    sanitizedTitle() {
+      const illegalRe = /[\/\?<>\\:\*\|"]/g;
+      const controlRe = /[\x00-\x1f\x80-\x9f]/g;
+      const reservedRe = /^\.+$/;
+      const windowsReservedRe = /^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\..*)?$/i;
+      const windowsTrailingRe = /[\. ]+$/;
+      const spaces = /\s/g;
+      const replacement = "_";
+
+      return this.title()
+        .replace(spaces, replacement)
+        .replace(illegalRe, replacement)
+        .replace(controlRe, replacement)
+        .replace(reservedRe, replacement)
+        .replace(windowsReservedRe, replacement)
+        .replace(windowsTrailingRe, replacement)
+        .substring(0, Math.min(this.title().length, 250));
+    },
   };
 }

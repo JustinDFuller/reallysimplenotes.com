@@ -21,5 +21,9 @@ function Page() {
     deleteButton() {
       return document.getElementById("delete-button");
     },
+    downloadButton() {
+      return document.getElementById("download-button");
+    },
+
   };
 }

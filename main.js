@@ -68,6 +68,22 @@ function init() {
     render();
   });
 
+  page.downloadButton().addEventListener("click", function (e) {
+    const note = notes.getActive();
+
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(note.content()));
+    element.setAttribute('download', note.sanitizedTitle());
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+  });
+
+
   render();
 }
 
