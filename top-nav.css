@@ -71,7 +71,7 @@
     justify-content: space-between;
   }
 
-  #top-nav-title-container {
+  #top-nav-bar, #top-nav-title-container {
     width: auto;
   }
 
