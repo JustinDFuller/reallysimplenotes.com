@@ -22,3 +22,9 @@
   background: var(--background-hover);
   cursor: pointer;
 }
+
+@media screen and (max-width: 1200px) {
+  #files {
+    width: 100%;
+  }
+}
