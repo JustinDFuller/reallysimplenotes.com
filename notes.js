@@ -23,8 +23,25 @@ Now, go ahead, erase this text and start writing some notes!`;
     localStorage.setItem("IDS", JSON.stringify(ids));
   }
 
+  function save(note) {
+    localStorage.setItem(note.ID(), note.toJSON());
+  }
+
   function init(notes) {
     const active = notes.find((n) => n.isActive());
+
+    const paths = window.location.pathname.split("/");
+    if (paths.length > 1) {
+      const fromPath = notes.find((n) => n.ID() === Number(paths[1]));
+      if (fromPath) {
+        if (active) {
+          save(active.setActive(false));
+        }
+        save(fromPath.setActive(true));
+        return notes.map(n => n.setActive(n.ID() === fromPath.ID()));
+      }
+    }
+
     if (active) {
       return notes;
     }
@@ -42,6 +59,7 @@ Now, go ahead, erase this text and start writing some notes!`;
   const data = init(input);
 
   return {
+    save,
     isEmpty() {
       return data.length === 0;
     },
@@ -57,11 +75,8 @@ Now, go ahead, erase this text and start writing some notes!`;
     get(note) {
       return data.find((n) => n.ID() === note.ID());
     },
-    save(note) {
-      localStorage.setItem(note.ID(), note.toJSON());
-    },
     set(note) {
-      this.save(note);
+      save(note);
       return LocalStorageNotes(
         data.map((n) => (n.ID() === note.ID() ? note : n))
       );
@@ -82,23 +97,14 @@ Now, go ahead, erase this text and start writing some notes!`;
     add(note) {
       const updated = [...data, note];
       saveIDs(updated);
-      this.save(note);
+      save(note);
       return LocalStorageNotes(updated);
     },
-    activate(note) {
-      const updated = data.map(function (n) {
-        if (n.ID() === note.ID()) {
-          return n.setActive(true);
-        }
-        return n.setActive(false);
-      });
-
-      updated.forEach((n) => this.save(n));
-
-      return LocalStorageNotes(updated);
+    refresh() {
+      return LocalStorageNotes(data);
     },
     getActive() {
-      return data.find(n => n.isActive())
+      return data.find((n) => n.isActive());
     },
   };
 }

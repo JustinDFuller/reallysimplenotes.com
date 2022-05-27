@@ -46,6 +46,9 @@ function Note(input) {
     deleted() {
       return note.Deleted;
     },
+    urlEncodeTitle() {
+      return encodeURI(this.title())
+    },
     sanitizedTitle() {
       const illegalRe = /[\/\?<>\\:\*\|"]/g;
       const controlRe = /[\x00-\x1f\x80-\x9f]/g;

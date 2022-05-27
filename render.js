@@ -18,7 +18,8 @@ function render() {
     }
 
     file.onClick((e) => {
-      notes = notes.activate(note);
+      history.pushState({}, "", `/${note.ID()}/${note.urlEncodeTitle()}`);
+      notes = notes.refresh();
       sidebar.toggle();
       editor.toggle();
       render();

@@ -24,6 +24,5 @@ function Page() {
     downloadButton() {
       return document.getElementById("download-button");
     },
-
   };
 }
