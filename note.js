@@ -1,4 +1,13 @@
-function Note(note = {}) {
+function Note(input) {
+  const defaults = {
+    Data: "",
+    ID: 0,
+    Active: false,
+    Deleted: false,
+  };
+
+  const note = Object.assign({}, defaults, input);
+
   return {
     title() {
       return note.Data.split("\n")[0].replace("# ", "") || "New Note";
@@ -26,6 +35,16 @@ function Note(note = {}) {
         ...note,
         Active: active,
       });
+    },
+    delete() {
+      return Note({
+        ...note,
+        Deleted: true,
+        Active: false,
+      });
+    },
+    deleted() {
+      return note.Deleted;
     },
   };
 }

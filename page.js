@@ -1,22 +1,25 @@
 function Page() {
   return {
     sidebarButton() {
-      return document.getElementById("top-nav-title")
+      return document.getElementById("top-nav-title");
     },
     addButton() {
-      return document.getElementById("add")
+      return document.getElementById("add");
     },
     editor() {
-      return document.getElementById("editor")
+      return document.getElementById("editor");
     },
     files() {
-      return document.getElementById("files")
+      return document.getElementById("files");
     },
     file() {
-      return document.createElement("li")
+      return document.createElement("li");
     },
     sidebar() {
-      return document.getElementById("sidebar")
+      return document.getElementById("sidebar");
     },
-  }
+    deleteButton() {
+      return document.getElementById("delete-button");
+    },
+  };
 }

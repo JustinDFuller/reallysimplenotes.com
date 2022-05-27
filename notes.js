@@ -1,5 +1,4 @@
-
-function LocalStorageNotes(data = []) {
+function LocalStorageNotes(input = []) {
   const DEFAULT_DATA = `Welcome to Really Simple Notes!
 
 This notes app is a little different than some you might have used before.
@@ -19,6 +18,29 @@ When you make changes, it will automatically save in your browser.
 
 Now, go ahead, erase this text and start writing some notes!`;
 
+  function saveIDs(notes) {
+    const ids = notes.map((n) => n.ID());
+    localStorage.setItem("IDS", JSON.stringify(ids));
+  }
+
+  function init(notes) {
+    const active = notes.find((n) => n.isActive());
+    if (active) {
+      return notes;
+    }
+
+    let found = false;
+    return notes.map((n) => {
+      if (!n.deleted() && !found) {
+        found = true;
+        return n.setActive(true);
+      }
+      return n;
+    });
+  }
+
+  const data = init(input);
+
   return {
     isEmpty() {
       return data.length === 0;
@@ -30,7 +52,7 @@ Now, go ahead, erase this text and start writing some notes!`;
         Data: DEFAULT_DATA,
       });
       this.add(note);
-      return LocalStorageNotes([note])
+      return LocalStorageNotes([note]);
     },
     get(note) {
       return data.find((n) => n.ID() === note.ID());
@@ -52,15 +74,14 @@ Now, go ahead, erase this text and start writing some notes!`;
       );
     },
     list() {
-      return data;
+      return data.filter((n) => !n.deleted());
     },
     nextID() {
       return data.length + 1 || 1;
     },
     add(note) {
       const updated = [...data, note];
-      const ids = updated.map((n) => n.ID());
-      localStorage.setItem("IDS", JSON.stringify(ids));
+      saveIDs(updated);
       this.save(note);
       return LocalStorageNotes(updated);
     },
@@ -77,7 +98,7 @@ Now, go ahead, erase this text and start writing some notes!`;
       return LocalStorageNotes(updated);
     },
     getActive() {
-      return data.find((n) => n.isActive());
+      return data.find(n => n.isActive())
     },
   };
 }

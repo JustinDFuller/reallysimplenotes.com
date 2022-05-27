@@ -1,6 +1,12 @@
 function render() {
   files.reset();
 
+  if (notes.list().length < 2) {
+    page.deleteButton().style.display = "none";
+  } else {
+    page.deleteButton().style.display = "inline-block";
+  }
+
   for (const note of notes.list()) {
     const file = File();
     file.setTitle(note.title());
@@ -8,7 +14,7 @@ function render() {
     if (note.isActive()) {
       file.setActive();
       editor.setContent(note.content());
-      document.title = note.title()  + " | Really Simple Notes";
+      document.title = note.title() + " | Really Simple Notes";
     }
 
     file.onClick((e) => {
