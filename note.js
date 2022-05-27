@@ -47,7 +47,7 @@ function Note(input) {
       return note.Deleted;
     },
     urlEncodeTitle() {
-      return encodeURI(this.title())
+      return encodeURI(this.title().replace(/\s/g, "-"))
     },
     sanitizedTitle() {
       const illegalRe = /[\/\?<>\\:\*\|"]/g;
