@@ -1,7 +1,7 @@
 function Page() {
   return {
     sidebarButton() {
-      return document.getElementById("sidebar-title")
+      return document.getElementById("top-nav-title")
     },
     addButton() {
       return document.getElementById("add")

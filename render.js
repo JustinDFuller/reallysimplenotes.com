@@ -8,6 +8,7 @@ function render() {
     if (note.isActive()) {
       file.setActive();
       editor.setContent(note.content());
+      document.title = note.title()  + " | Really Simple Notes";
     }
 
     file.onClick((e) => {
