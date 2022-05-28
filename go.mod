@@ -3,6 +3,7 @@ module github.com/justindfuller/really-simple-notes
 go 1.15
 
 require (
-	github.com/cespare/reflex v0.3.1 // indirect
-	golang.org/dl v0.0.0-20220510203206-88ea6714b1d9 // indirect
+	github.com/tdewolff/minify v2.3.6+incompatible
+	github.com/tdewolff/parse v2.3.4+incompatible // indirect
+	github.com/tdewolff/test v1.0.6 // indirect
 )
