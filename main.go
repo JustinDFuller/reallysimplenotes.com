@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"io/fs"
@@ -17,11 +18,45 @@ import (
 	"github.com/tdewolff/minify/js"
 )
 
+type User struct {
+	ID    string
+	Notes []Note
+}
+
+type Note struct {
+	UserID   string
+	ID       string
+	Deleted  bool
+	Data     string
+	Children []Note
+}
+
 func main() {
+	users := map[string]User{}
+
 	m := minify.New()
 	m.AddFunc("text/css", css.Minify)
 	m.AddFunc("text/html", html.Minify)
 	m.AddFuncRegexp(regexp.MustCompile("^(application|text)/(x-)?(java|ecma)script$"), js.Minify)
+
+	http.HandleFunc("/v1/user", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodGet {
+			user := users[r.URL.Query().Get("userID")]
+			if err := json.NewEncoder(w).Encode(&user); err != nil {
+				log.Print(err)
+			}
+		}
+
+		if r.Method == http.MethodPost {
+			var user User
+			if err := json.NewDecoder(r.Body); err != nil {
+				log.Print(err)
+				return
+			}
+
+			users[user.ID] = user
+		}
+	})
 
 	http.HandleFunc("/service-worker.js", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./public/service-worker.js")
@@ -105,5 +140,7 @@ func main() {
 			log.Print(err)
 		}
 	})
+
+	log.Print("Listening on port :", os.Getenv("PORT"))
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", os.Getenv("PORT")), nil))
 }
