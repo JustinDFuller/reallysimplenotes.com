@@ -2,11 +2,12 @@
   width: var(--sidebar-width);
   margin: 0;
   max-height: 100%;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 #files > li {
-  width: 100%;
+  width: var(--sidebar-width);
   padding: var(--small-spacer);
   overflow: hidden;
   white-space: nowrap;
@@ -24,7 +25,7 @@
 }
 
 @media screen and (max-width: 1200px) {
-  #files {
+  #files, #files > li {
     width: 100%;
   }
 }
