@@ -1,4 +1,5 @@
 function render() {
+  const files = Files();
   files.reset();
 
   if (notes.list().length < 2) {
@@ -9,23 +10,22 @@ function render() {
 
   for (const note of notes.list()) {
     const file = File();
+    files.add(file);
     file.setTitle(note.title());
 
     if (note.isActive()) {
-      file.setActive();
       editor.setContent(note.content());
+      file.setActive();
       document.title = note.title() + " | Really Simple Notes";
     }
 
     file.onClick((e) => {
-      history.pushState({}, "", `/${note.ID()}/${note.urlEncodeTitle()}`);
+      history.pushState({}, "", note.url());
       notes = notes.refresh();
       sidebar.toggle();
       editor.toggle();
       render();
     });
-
-    files.add(file);
   }
 
   editor.focus();

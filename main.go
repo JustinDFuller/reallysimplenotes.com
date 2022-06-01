@@ -10,6 +10,7 @@ import (
 	"os"
 	"regexp"
 	"strings"
+	"sync"
 	"text/template"
 
 	"github.com/tdewolff/minify"
@@ -32,7 +33,7 @@ type Note struct {
 }
 
 func main() {
-	users := map[string]User{}
+	var users sync.Map
 
 	m := minify.New()
 	m.AddFunc("text/css", css.Minify)
@@ -40,21 +41,27 @@ func main() {
 	m.AddFuncRegexp(regexp.MustCompile("^(application|text)/(x-)?(java|ecma)script$"), js.Minify)
 
 	http.HandleFunc("/v1/user", func(w http.ResponseWriter, r *http.Request) {
+		var user User
+
 		if r.Method == http.MethodGet {
-			user := users[r.URL.Query().Get("userID")]
-			if err := json.NewEncoder(w).Encode(&user); err != nil {
-				log.Print(err)
+			found, ok := users.Load(r.URL.Query().Get("userID"))
+			if ok {
+				user = found.(User)
 			}
 		}
 
 		if r.Method == http.MethodPost {
-			var user User
-			if err := json.NewDecoder(r.Body); err != nil {
+			if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 				log.Print(err)
+				http.Error(w, "Unable to decode user", http.StatusBadRequest)
 				return
+			} else {
+				users.Store(user.ID, user)
 			}
+		}
 
-			users[user.ID] = user
+		if err := json.NewEncoder(w).Encode(&user); err != nil {
+			log.Print(err)
 		}
 	})
 
@@ -105,6 +112,10 @@ func main() {
 		}
 
 		for _, file := range jsGlob {
+			if strings.Contains(file, "test") && production {
+				continue
+			}
+
 			b, err := fs.ReadFile(dir, file)
 			if err != nil {
 				panic(err)

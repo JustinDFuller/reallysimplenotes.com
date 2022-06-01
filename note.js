@@ -1,7 +1,7 @@
 function Note(input) {
   const defaults = {
     Data: "",
-    ID: 0,
+    ID: crypto.randomUUID(),
     Active: false,
     Deleted: false,
   };
@@ -47,7 +47,7 @@ function Note(input) {
       return note.Deleted;
     },
     urlEncodeTitle() {
-      return encodeURI(this.title().replace(/\s/g, "-"))
+      return encodeURI(this.title().replace(/[^a-zA-Z\s]/g, "").replace(/[\s]/g, "-").slice(0, 30));
     },
     sanitizedTitle() {
       const illegalRe = /[\/\?<>\\:\*\|"]/g;
@@ -67,5 +67,11 @@ function Note(input) {
         .replace(windowsTrailingRe, replacement)
         .substring(0, Math.min(this.title().length, 250));
     },
+    toObject() {
+      return note;
+    },
+    url() {
+      return `/${note.ID}/${this.urlEncodeTitle()}`;
+    }
   };
 }

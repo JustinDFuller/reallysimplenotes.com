@@ -1,25 +1,19 @@
 let notes;
 let editor;
-let files;
 let sidebar;
 let page;
 
-function init() {
+async function init() {
   page = Page();
   editor = Editor();
-  files = Files();
   sidebar = Sidebar();
-  notes = LocalStorageNotes().init();
+  notes = await Notes(LocalStorage()).init();
 
   if (notes.isEmpty()) {
     notes = notes.prefill();
   }
 
-  history.pushState(
-    {},
-    "",
-    `/${notes.getActive().ID()}/${notes.getActive().urlEncodeTitle()}`
-  );
+  history.pushState({}, "", notes.getActive().url());
 
   editor.onChange(function (e) {
     notes = notes.set(notes.getActive().update(e.target.value));
@@ -58,17 +52,18 @@ function init() {
   page.addButton().addEventListener("click", function (e) {
     const note = Note({
       ID: notes.nextID(),
-      Name: "New Note",
       Data: "",
-      Active: false,
+      Active: true,
       Deleted: false,
     });
+    history.pushState({}, "", note.url());
     notes = notes.add(note);
 
     render();
   });
 
   page.deleteButton().addEventListener("click", function (e) {
+    history.pushState({}, "", "/");
     notes = notes.set(notes.getActive().delete());
 
     render();

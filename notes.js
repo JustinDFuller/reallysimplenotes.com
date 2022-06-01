@@ -1,5 +1,5 @@
-function LocalStorageNotes(input = []) {
-  const DEFAULT_DATA = `Welcome to Really Simple Notes!
+function Notes(storage) {
+const DEFAULT_DATA = `Welcome to Really Simple Notes!
 
 This notes app is a little different than some you might have used before.
 
@@ -18,93 +18,84 @@ When you make changes, it will automatically save in your browser.
 
 Now, go ahead, erase this text and start writing some notes!`;
 
-  function saveIDs(notes) {
-    const ids = notes.map((n) => n.ID());
-    localStorage.setItem("IDS", JSON.stringify(ids));
-  }
+  function New(input = []) {
+    function init(notes) {
+      const active = notes.find((n) => n.isActive());
 
-  function save(note) {
-    localStorage.setItem(note.ID(), note.toJSON());
-  }
-
-  function init(notes) {
-    const active = notes.find((n) => n.isActive());
-
-    const paths = window.location.pathname.split("/");
-    if (paths.length > 1) {
-      const fromPath = notes.find((n) => n.ID() === Number(paths[1]));
-      if (fromPath) {
-        if (active) {
-          save(active.setActive(false));
+      const paths = window.location.pathname.split("/");
+      if (paths.length > 1) {
+        const fromPath = notes.find((n) => n.ID() === paths[1]);
+        if (fromPath) {
+          if (active) {
+            storage.save(active.setActive(false));
+          }
+          storage.save(fromPath.setActive(true));
+          return notes.map(n => n.setActive(n.ID() === fromPath.ID()));
         }
-        save(fromPath.setActive(true));
-        return notes.map(n => n.setActive(n.ID() === fromPath.ID()));
       }
+
+      if (active) {
+        return notes;
+      }
+
+      let found = false;
+      return notes.map((n) => {
+        if (!n.deleted() && !found) {
+          found = true;
+          return n.setActive(true);
+        }
+        return n;
+      });
     }
 
-    if (active) {
-      return notes;
-    }
+    const data = init(input);
 
-    let found = false;
-    return notes.map((n) => {
-      if (!n.deleted() && !found) {
-        found = true;
-        return n.setActive(true);
-      }
-      return n;
-    });
+    return {
+      isEmpty() {
+        return data.length === 0;
+      },
+      prefill() {
+        const note = Note({
+          ID: crypto.randomUUID(),
+          Active: true,
+          Data: DEFAULT_DATA,
+        });
+        this.add(note);
+        return New([note]);
+      },
+      get(note) {
+        return data.find((n) => n.ID() === note.ID());
+      },
+      set(note) {
+        storage.save(note);
+        return New(
+          data.map((n) => (n.ID() === note.ID() ? note : n))
+        );
+      },
+      list() {
+        return data.filter((n) => !n.deleted());
+      },
+      nextID() {
+        return crypto.randomUUID();
+      },
+      add(note) {
+        const updated = [...data.map(n => n.setActive(false)), note.setActive(true)];
+        storage.saveAll(updated);
+        return New(updated);
+      },
+      refresh() {
+        return New(data);
+      },
+      getActive() {
+        return data.find((n) => n.isActive());
+      },
+    };
   }
-
-  const data = init(input);
 
   return {
-    save,
-    isEmpty() {
-      return data.length === 0;
-    },
-    prefill() {
-      const note = Note({
-        ID: 1,
-        Active: true,
-        Data: DEFAULT_DATA,
-      });
-      this.add(note);
-      return LocalStorageNotes([note]);
-    },
-    get(note) {
-      return data.find((n) => n.ID() === note.ID());
-    },
-    set(note) {
-      save(note);
-      return LocalStorageNotes(
-        data.map((n) => (n.ID() === note.ID() ? note : n))
-      );
-    },
-    init() {
-      ids = JSON.parse(localStorage.getItem("IDS")) || [];
-
-      return LocalStorageNotes(
-        ids.map((id) => Note(JSON.parse(localStorage.getItem(id))))
-      );
-    },
-    list() {
-      return data.filter((n) => !n.deleted());
-    },
-    nextID() {
-      return data.length + 1 || 1;
-    },
-    add(note) {
-      const updated = [...data, note];
-      saveIDs(updated);
-      save(note);
-      return LocalStorageNotes(updated);
-    },
-    refresh() {
-      return LocalStorageNotes(data);
-    },
-    getActive() {
-      return data.find((n) => n.isActive());
-    },
-  };
+    async init() {
+      const notes = await storage.list();
+      return New(notes.map(Note));
+    },  
+  }
 }
