@@ -8,7 +8,7 @@ function File(element = page.file()) {
       element.innerHTML = title;
     },
     onClick(fn) {
-      element.addEventListener("click", fn);
+      element.onclick = fn;
     },
     element() {
       return element;

@@ -18,25 +18,7 @@ async function tests() {
   localStorage.clear();
   await init();
 
-  suite("File navigator")
-
-  test("There is one file")
-  const files = page.files();
-  if (files.children.length < 1) {
-    return fail(`Expected 1 file but found ${files.children.length}`);
-  }
-
-  test("The first file is the welcome note")
-  const file = files.children[0]
-  if (file.textContent !== "Welcome to Really Simple Notes!") {
-    return fail(`Got unexpected text content: ${file.textContent}`);
-  }
-
-  test("The file is visible on the screen")
-  const pos = file.getBoundingClientRect();
-  if (pos.top < 0 || pos.left < 0 || pos.bottom > window.innerHeight || pos.right > window.innerWidth) {
-    return fail(`File not visible ${pos.top}, ${pos.left}, ${pos.bottom}, ${pos.right}`)
-  }
+  
 
   suite("Local storage")
 
@@ -122,7 +104,7 @@ async function tests() {
 
   test("The editor is the active element")
   if (document.activeElement !== editor) {
-    return fail(`Expected element to hae focus, #${document.activeElement.id}`)
+    return fail(`Expected element to have focus, #${document.activeElement.id}`)
   }
 
   test("The editor content is the correct width")
@@ -163,6 +145,102 @@ async function tests() {
 
   if (note.Data.length !== oldNoteLength + 1) {
     return fail(`Expected note length ${oldNoteLength + 1}, got ${note.Data.length}`);
+  }
+
+  suite("File navigator")
+
+  test("There is one file")
+  const files = page.files();
+  if (files.children.length < 1) {
+    return fail(`Expected 1 file but found ${files.children.length}`);
+  }
+
+  test("The first file is the welcome note")
+  let file = files.children[0]
+  if (file.textContent !== "Welcome to Really Simple Notes!") {
+    return fail(`Got unexpected text content: ${file.textContent}`);
+  }
+
+  test("The file is visible on the screen")
+  const pos = file.getBoundingClientRect();
+  if (pos.top < 0 || pos.left < 0 || pos.bottom > window.innerHeight || pos.right > window.innerWidth) {
+    return fail(`File not visible ${pos.top}, ${pos.left}, ${pos.bottom}, ${pos.right}`)
+  }
+
+  suite("Adding a new file")
+
+  test("The add button adds a new note");
+  page.addButton().dispatchEvent(new Event("click"));
+  if (files.children.length !== 2) {
+    return fail(`Expected 2 files, got ${files.children.length}`)
+  }
+
+  test("The empty file says New Note")
+  file = files.children[1];
+  if (file.textContent !== "New Note") {
+    return fail(`Got unexpected file name, ${file.textContent}`)
+  }
+
+  test("The new file is active")
+  if (!file.classList.contains("active")) {
+    return fail("Expected new file to be active")
+  }
+
+  test("The other file is not active")
+  if (files.children[0].classList.contains("active")) {
+    return fail("Expected the other file to not be active")
+  }
+
+  test("The editor is now empty")
+  if (editor.value !== "") {
+    return fail("Expected the editor to be empty")
+  }
+
+  test("The editor is still selected")
+  if (document.activeElement !== editor) {
+    return fail(`Expected element to have focus, #${document.activeElement.id}`)
+  }
+
+  test("The new note is saved to the list in local storage")
+  ids = JSON.parse(localStorage.getItem("IDS"));
+  if (ids.length !== 2) {
+    return fail(`Expected IDs length 2, got ${ids.length}`)
+  }
+
+  test("The new note is saved in local storage")
+  note = JSON.parse(localStorage.getItem(ids[1]));
+  if (note.ID !== ids[1]) {
+    return fail(`Found the wrong ID ${note.ID}, ${ids[1]}`)
+  }
+
+  test("The path is updated with the ID")
+  if (window.location.pathname.split("/")[1] !== note.ID) {
+    return fail(`Expected the ID to be in the path, got ${window.location.pathname}`)
+  }
+
+  test("The path is updated with New Note")
+  if (window.location.pathname.split("/")[2] !== "New-Note") {
+    return fail(`Expected the ID to be in the path, got ${window.location.pathname}`)
+  }
+
+  suite("Editing a new note")
+
+  test("The correct updated note is saved in local storage")
+  editor.value += "This is a test note";
+  editor.dispatchEvent(new InputEvent("input", {
+    bubbles: true,
+    inputType: "insertText",
+  }))
+
+  note = JSON.parse(localStorage.getItem(ids[1]));
+  if (note.Data !== editor.value) {
+    return fail(`Expected the note to be updated with the editor value, got ${note.Data}`)
+  }
+
+  test("The other note is not updated") 
+  const firstNote = JSON.parse(localStorage.getItem(ids[0]));
+  if (firstNote.Data.includes(editor.value)) {
+    return fail(`Expected the first note to NOT be updated with the editor value, got ${firstNote.Data}`)
   }
 
   console.log(

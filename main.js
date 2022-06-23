@@ -44,12 +44,12 @@ async function init() {
     }
   });
 
-  page.sidebarButton().addEventListener("click", function (e) {
+  page.sidebarButton().onclick = function (e) {
     sidebar.toggle();
     editor.toggle();
-  });
+  };
 
-  page.addButton().addEventListener("click", function (e) {
+  page.addButton().onclick = function (e) {
     const note = Note({
       ID: notes.nextID(),
       Data: "",
@@ -60,16 +60,16 @@ async function init() {
     notes = notes.add(note);
 
     render();
-  });
+  };
 
-  page.deleteButton().addEventListener("click", function (e) {
+  page.deleteButton().onclick = function (e) {
     history.pushState({}, "", "/");
     notes = notes.set(notes.getActive().delete());
 
     render();
-  });
+  };
 
-  page.downloadButton().addEventListener("click", function (e) {
+  page.downloadButton().onclick = function (e) {
     const note = notes.getActive();
 
     var element = document.createElement("a");
@@ -85,7 +85,7 @@ async function init() {
     element.click();
 
     document.body.removeChild(element);
-  });
+  };
 
   render();
 }

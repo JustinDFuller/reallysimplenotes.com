@@ -4,7 +4,7 @@ function Editor(element = page.editor()) {
       element.value = content;
     },
     onChange(fn) {
-      element.addEventListener("input", fn);
+      element.oninput = fn;
     },
     focus() {
       element.focus();
@@ -13,7 +13,7 @@ function Editor(element = page.editor()) {
       element.classList.toggle("hide-mobile");
     },
     onKeyDown(fn) {
-      element.addEventListener("keydown", fn);
+      element.onkeydown = fn;
     },
   };
 }
