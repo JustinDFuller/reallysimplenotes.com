@@ -1,5 +1,5 @@
 function Notes(storage) {
-const DEFAULT_DATA = `Welcome to Really Simple Notes!
+  const DEFAULT_DATA = `Welcome to Really Simple Notes!
 
 This notes app is a little different than some you might have used before.
 
@@ -30,7 +30,7 @@ Now, go ahead, erase this text and start writing some notes!`;
             storage.save(active.setActive(false));
           }
           storage.save(fromPath.setActive(true));
-          return notes.map(n => n.setActive(n.ID() === fromPath.ID()));
+          return notes.map((n) => n.setActive(n.ID() === fromPath.ID()));
         }
       }
 
@@ -68,9 +68,7 @@ Now, go ahead, erase this text and start writing some notes!`;
       },
       set(note) {
         storage.save(note);
-        return New(
-          data.map((n) => (n.ID() === note.ID() ? note : n))
-        );
+        return New(data.map((n) => (n.ID() === note.ID() ? note : n)));
       },
       list() {
         return data.filter((n) => !n.deleted());
@@ -79,7 +77,10 @@ Now, go ahead, erase this text and start writing some notes!`;
         return crypto.randomUUID();
       },
       add(note) {
-        const updated = [...data.map(n => n.setActive(false)), note.setActive(true)];
+        const updated = [
+          ...data.map((n) => n.setActive(false)),
+          note.setActive(true),
+        ];
         storage.saveAll(updated);
         return New(updated);
       },
@@ -96,6 +97,6 @@ Now, go ahead, erase this text and start writing some notes!`;
     async init() {
       const notes = await storage.list();
       return New(notes.map(Note));
-    },  
-  }
+    },
+  };
 }

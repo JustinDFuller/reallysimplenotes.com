@@ -47,7 +47,12 @@ function Note(input) {
       return note.Deleted;
     },
     urlEncodeTitle() {
-      return encodeURI(this.title().replace(/[^a-zA-Z\s]/g, "").replace(/[\s]/g, "-").slice(0, 30));
+      return encodeURI(
+        this.title()
+          .replace(/[^a-zA-Z\s]/g, "")
+          .replace(/[\s]/g, "-")
+          .slice(0, 30)
+      );
     },
     sanitizedTitle() {
       const illegalRe = /[\/\?<>\\:\*\|"]/g;
@@ -72,6 +77,6 @@ function Note(input) {
     },
     url() {
       return `/${note.ID}/${this.urlEncodeTitle()}`;
-    }
+    },
   };
 }
