@@ -106,7 +106,10 @@ async function tests () {
     return fail(`Found invalid name in path, ${paths[2]}`)
   }
 
-  todo('the page title contains the note title')
+  test('the page title contains the note title')
+  if (document.title !== Note(note).title() + ' | Really Simple Notes') {
+    return fail(`Found unexpected document title "${document.title}"`)
+  }
 
   suite('Editor')
 
@@ -278,7 +281,7 @@ async function tests () {
   }
 
   test('The other note is not updated')
-  const firstNote = JSON.parse(localStorage.getItem(ids[0]))
+  let firstNote = JSON.parse(localStorage.getItem(ids[0]))
   if (firstNote.Data.includes(editor.value)) {
     return fail(
       `Expected the first note to NOT be updated with the editor value, got ${firstNote.Data}`
@@ -294,11 +297,48 @@ async function tests () {
 
   suite('Switching between notes')
 
-  todo('Clicking a note switches the active file in the sidebar')
-  todo('Clicking a note switches the content in the editor')
-  todo('Clicking a note switches the URL')
-  todo('Clicking a note switches the page title')
-  todo('the correct note is saved after switching notes')
+  test('Clicking a note switches the active file in the sidebar')
+  page.files().children[0].dispatchEvent(new Event('click'))
+  if (!page.files().children[0].classList.contains('active')) {
+    return fail('Expected the first file to be active')
+  }
+
+  test('Clicking a note switches the content in the editor')
+  if (editor.value !== firstNote.Data) {
+    return fail(`Found unexpected editor value ${editor.value}`)
+  }
+
+  test('Clicking a note switches the URL')
+  if (window.location.pathname !== Note(firstNote).url()) {
+    return fail(`Found unexpected path ${window.location.pathname}`)
+  }
+
+  test('Clicking a note switches the page title')
+  if (!document.title.includes(Note(firstNote).title())) {
+    return fail(`Found unexpected document title ${document.title}`)
+  }
+
+  test('the correct note is saved after switching notes')
+  editor.value += 'Adding more text'
+  editor.dispatchEvent(
+    new InputEvent('input', {
+      bubbles: true,
+      inputType: 'insertText'
+    })
+  )
+
+  firstNote = JSON.parse(localStorage.getItem(ids[0]))
+  if (
+    firstNote.Data !== editor.value ||
+    !firstNote.Data.includes('Adding more text')
+  ) {
+    return fail(
+      `Expected the note to be updated with the editor value, got ${note.Data}`
+    )
+  }
+
+  // go back to the second file for the rest of tests
+  page.files().children[1].dispatchEvent(new Event('click'))
 
   suite('Deleting a note')
 
