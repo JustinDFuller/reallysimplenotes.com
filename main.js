@@ -65,6 +65,7 @@ async function init() {
   page.deleteButton().onclick = function (e) {
     history.pushState({}, "", "/");
     notes = notes.set(notes.getActive().delete());
+    history.pushState({}, "", notes.getActive().url());
 
     render();
   };

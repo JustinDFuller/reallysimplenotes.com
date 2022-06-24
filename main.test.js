@@ -243,6 +243,35 @@ async function tests() {
     return fail(`Expected the first note to NOT be updated with the editor value, got ${firstNote.Data}`)
   }
 
+  suite("Deleting a note")
+
+  page.deleteButton().dispatchEvent(new Event("click"));
+
+  test("The button is deleted from the file navigator")
+  if (files.children.length !== 1) {
+    return fail(`Expected 1 file, got ${files.children.length}`)
+  }
+
+  test("The first note is now active")
+  if (!files.children[0].classList.contains("active")) {
+    return fail("Expected first file to be active")
+  }
+
+  test("The editor contains the first note")
+  if (editor.value !== firstNote.Data) {
+    return fail(`Expected editor to contain first note data, got ${editor.value}`)
+  }
+
+  test("The editor is the active element")
+  if (document.activeElement !== editor) {
+    return fail(`Expected element to have focus, #${document.activeElement.id}`)
+  }
+
+  test("The URL contains the first note's ID")
+  if (!window.location.pathname.includes(firstNote.ID)) {
+    return fail(`Expected URL to contain note ID, ${window.location.pathname}`)
+  }
+
   console.log(
     "%c All tests passed",
     "background: black; color: green; padding: 10px 20px;"
