@@ -3,6 +3,14 @@ async function tests () {
     console.log(name)
   }
 
+  function todo (name) {
+    console.log(
+      '%c TODO: %s',
+      'background: black; color: yellow; padding: 5px 10px;',
+      name
+    )
+  }
+
   function test (name) {
     console.log(`  ${name}`)
   }
@@ -97,6 +105,8 @@ async function tests () {
   ) {
     return fail(`Found invalid name in path, ${paths[2]}`)
   }
+
+  todo('the page title contains the note title')
 
   suite('Editor')
 
@@ -282,6 +292,14 @@ async function tests () {
     )
   }
 
+  suite('Switching between notes')
+
+  todo('Clicking a note switches the active file in the sidebar')
+  todo('Clicking a note switches the content in the editor')
+  todo('Clicking a note switches the URL')
+  todo('Clicking a note switches the page title')
+  todo('the correct note is saved after switching notes')
+
   suite('Deleting a note')
 
   page.deleteButton().dispatchEvent(new Event('click'))
@@ -312,6 +330,13 @@ async function tests () {
   if (!window.location.pathname.includes(firstNote.ID)) {
     return fail(`Expected URL to contain note ID, ${window.location.pathname}`)
   }
+
+  suite('Data integrity')
+
+  todo('A numerical ID is converted to a UUID in the IDs list')
+  todo('The corresponding numerical ID is converted to a UUID in local storage')
+  todo('The ID in the data is updated to the UUID')
+  todo('The old note ID is saved as a backup')
 
   console.log(
     '%c All tests passed',
