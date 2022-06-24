@@ -1,67 +1,67 @@
-function Note(input) {
+function Note (input) {
   const defaults = {
-    Data: "",
+    Data: '',
     ID: crypto.randomUUID(),
     Active: false,
-    Deleted: false,
-  };
+    Deleted: false
+  }
 
-  const note = Object.assign({}, defaults, input);
+  const note = Object.assign({}, defaults, input)
 
   return {
-    title() {
-      return note.Data.split("\n")[0].replace("# ", "") || "New Note";
+    title () {
+      return note.Data.split('\n')[0].replace('# ', '') || 'New Note'
     },
-    ID() {
-      return note.ID;
+    ID () {
+      return note.ID
     },
-    isActive() {
-      return note.Active;
+    isActive () {
+      return note.Active
     },
-    content() {
-      return note.Data;
+    content () {
+      return note.Data
     },
-    toJSON() {
-      return JSON.stringify(note);
+    toJSON () {
+      return JSON.stringify(note)
     },
-    update(data) {
+    update (data) {
       return Note({
         ...note,
-        Data: data,
-      });
+        Data: data
+      })
     },
-    setActive(active) {
+    setActive (active) {
       return Note({
         ...note,
-        Active: active,
-      });
+        Active: active
+      })
     },
-    delete() {
+    delete () {
       return Note({
         ...note,
         Deleted: true,
-        Active: false,
-      });
+        Active: false
+      })
     },
-    deleted() {
-      return note.Deleted;
+    deleted () {
+      return note.Deleted
     },
-    urlEncodeTitle() {
+    urlEncodeTitle () {
       return encodeURI(
         this.title()
-          .replace(/[^a-zA-Z\s]/g, "")
-          .replace(/[\s]/g, "-")
+          .replace(/[^a-zA-Z\s]/g, '')
+          .replace(/[\s]/g, '-')
           .slice(0, 30)
-      );
+      )
     },
-    sanitizedTitle() {
-      const illegalRe = /[\/\?<>\\:\*\|"]/g;
-      const controlRe = /[\x00-\x1f\x80-\x9f]/g;
-      const reservedRe = /^\.+$/;
-      const windowsReservedRe = /^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\..*)?$/i;
-      const windowsTrailingRe = /[\. ]+$/;
-      const spaces = /\s/g;
-      const replacement = "_";
+    sanitizedTitle () {
+      const illegalRe = /[\/\?<>\\:\*\|"]/g
+      const controlRe = /[\x00-\x1f\x80-\x9f]/g
+      const reservedRe = /^\.+$/
+      const windowsReservedRe = /^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\..*)?$/i
+      const windowsTrailingRe = /[\. ]+$/
+      const spaces = /\s/g
+      const replacement = '_'
 
       return this.title()
         .replace(spaces, replacement)
@@ -70,13 +70,13 @@ function Note(input) {
         .replace(reservedRe, replacement)
         .replace(windowsReservedRe, replacement)
         .replace(windowsTrailingRe, replacement)
-        .substring(0, Math.min(this.title().length, 250));
+        .substring(0, Math.min(this.title().length, 250))
     },
-    toObject() {
-      return note;
+    toObject () {
+      return note
     },
-    url() {
-      return `/${note.ID}/${this.urlEncodeTitle()}`;
-    },
-  };
+    url () {
+      return `/${note.ID}/${this.urlEncodeTitle()}`
+    }
+  }
 }

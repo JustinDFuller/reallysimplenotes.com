@@ -1,12 +1,12 @@
-function Files(element = page.files()) {
+function Files (element = page.files()) {
   return {
-    reset() {
+    reset () {
       while (element.firstChild) {
-        element.removeChild(element.firstChild);
+        element.removeChild(element.firstChild)
       }
     },
-    add(file) {
-      element.appendChild(file.element());
-    },
-  };
+    add (file) {
+      element.appendChild(file.element())
+    }
+  }
 }

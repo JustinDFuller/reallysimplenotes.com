@@ -1,19 +1,19 @@
-function Editor(element = page.editor()) {
+function Editor (element = page.editor()) {
   return {
-    setContent(content) {
-      element.value = content;
+    setContent (content) {
+      element.value = content
     },
-    onChange(fn) {
-      element.oninput = fn;
+    onChange (fn) {
+      element.oninput = fn
     },
-    focus() {
-      element.focus();
+    focus () {
+      element.focus()
     },
-    toggle() {
-      element.classList.toggle("hide-mobile");
+    toggle () {
+      element.classList.toggle('hide-mobile')
     },
-    onKeyDown(fn) {
-      element.onkeydown = fn;
-    },
-  };
+    onKeyDown (fn) {
+      element.onkeydown = fn
+    }
+  }
 }

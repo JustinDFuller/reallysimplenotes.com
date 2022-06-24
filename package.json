@@ -1,0 +1,33 @@
+{
+  "name": "really-simple-notes",
+  "version": "1.0.0",
+  "description": "[www.reallysimplenotes.com](https://www.reallysimplenotes.com)",
+  "main": "main.js",
+  "scripts": {
+    "format": "prettier-standard --write",
+    "lint": "standard --fix",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JustinDFuller/really-simple-notes.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JustinDFuller/really-simple-notes/issues"
+  },
+  "homepage": "https://github.com/JustinDFuller/really-simple-notes#readme",
+  "devDependencies": {
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.2",
+    "prettier-standard": "^16.4.1",
+    "standard": "^17.0.0"
+  },
+  "lint-staged": {
+    "*.js": [
+      "npm run format"
+    ]
+  }
+}

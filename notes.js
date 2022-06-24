@@ -1,4 +1,4 @@
-function Notes(storage) {
+function Notes (storage) {
   const DEFAULT_DATA = `Welcome to Really Simple Notes!
 
 This notes app is a little different than some you might have used before.
@@ -16,87 +16,87 @@ What if you have a quote?
 
 When you make changes, it will automatically save in your browser.
 
-Now, go ahead, erase this text and start writing some notes!`;
+Now, go ahead, erase this text and start writing some notes!`
 
-  function New(input = []) {
-    function init(notes) {
-      const active = notes.find((n) => n.isActive());
+  function New (input = []) {
+    function init (notes) {
+      const active = notes.find(n => n.isActive())
 
-      const paths = window.location.pathname.split("/");
+      const paths = window.location.pathname.split('/')
       if (paths.length > 1) {
-        const fromPath = notes.find((n) => n.ID() === paths[1]);
+        const fromPath = notes.find(n => n.ID() === paths[1])
         if (fromPath) {
           if (active) {
-            storage.save(active.setActive(false));
+            storage.save(active.setActive(false))
           }
-          storage.save(fromPath.setActive(true));
-          return notes.map((n) => n.setActive(n.ID() === fromPath.ID()));
+          storage.save(fromPath.setActive(true))
+          return notes.map(n => n.setActive(n.ID() === fromPath.ID()))
         }
       }
 
       if (active) {
-        return notes;
+        return notes
       }
 
-      let found = false;
-      return notes.map((n) => {
+      let found = false
+      return notes.map(n => {
         if (!n.deleted() && !found) {
-          found = true;
-          return n.setActive(true);
+          found = true
+          return n.setActive(true)
         }
-        return n;
-      });
+        return n
+      })
     }
 
-    const data = init(input);
+    const data = init(input)
 
     return {
-      isEmpty() {
-        return data.length === 0;
+      isEmpty () {
+        return data.length === 0
       },
-      prefill() {
+      prefill () {
         const note = Note({
           ID: crypto.randomUUID(),
           Active: true,
-          Data: DEFAULT_DATA,
-        });
-        this.add(note);
-        return New([note]);
+          Data: DEFAULT_DATA
+        })
+        this.add(note)
+        return New([note])
       },
-      get(note) {
-        return data.find((n) => n.ID() === note.ID());
+      get (note) {
+        return data.find(n => n.ID() === note.ID())
       },
-      set(note) {
-        storage.save(note);
-        return New(data.map((n) => (n.ID() === note.ID() ? note : n)));
+      set (note) {
+        storage.save(note)
+        return New(data.map(n => (n.ID() === note.ID() ? note : n)))
       },
-      list() {
-        return data.filter((n) => !n.deleted());
+      list () {
+        return data.filter(n => !n.deleted())
       },
-      nextID() {
-        return crypto.randomUUID();
+      nextID () {
+        return crypto.randomUUID()
       },
-      add(note) {
+      add (note) {
         const updated = [
-          ...data.map((n) => n.setActive(false)),
-          note.setActive(true),
-        ];
-        storage.saveAll(updated);
-        return New(updated);
+          ...data.map(n => n.setActive(false)),
+          note.setActive(true)
+        ]
+        storage.saveAll(updated)
+        return New(updated)
       },
-      refresh() {
-        return New(data);
+      refresh () {
+        return New(data)
       },
-      getActive() {
-        return data.find((n) => n.isActive());
-      },
-    };
+      getActive () {
+        return data.find(n => n.isActive())
+      }
+    }
   }
 
   return {
-    async init() {
-      const notes = await storage.list();
-      return New(notes.map(Note));
-    },
-  };
+    async init () {
+      const notes = await storage.list()
+      return New(notes.map(Note))
+    }
+  }
 }

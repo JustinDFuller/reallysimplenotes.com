@@ -1,7 +1,7 @@
-function Sidebar(element = page.sidebar()) {
+function Sidebar (element = page.sidebar()) {
   return {
-    toggle() {
-      element.classList.toggle("show-mobile");
-    },
-  };
+    toggle () {
+      element.classList.toggle('show-mobile')
+    }
+  }
 }
