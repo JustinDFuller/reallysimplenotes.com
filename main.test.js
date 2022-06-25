@@ -183,6 +183,13 @@ async function tests () {
     return fail(`Expected 1 file but found ${files.children.length}`)
   }
 
+  test('You cannot delete a file when there is only one left')
+  if (page.deleteButton().style.display !== 'none') {
+    return fail(
+      `Found unexpected deleteButton style ${page.deleteButton().style.display}`
+    )
+  }
+
   test('The first file is the welcome note')
   let file = files.children[0]
   if (file.textContent !== 'Welcome to Really Simple Notes!') {
@@ -208,6 +215,13 @@ async function tests () {
   page.addButton().dispatchEvent(new Event('click'))
   if (files.children.length !== 2) {
     return fail(`Expected 2 files, got ${files.children.length}`)
+  }
+
+  test('You can delete a file when there is more than one')
+  if (page.deleteButton().style.display === 'none') {
+    return fail(
+      `Found unexpected deleteButton style ${page.deleteButton().style.display}`
+    )
   }
 
   test('The empty file says New Note')
