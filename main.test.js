@@ -349,6 +349,21 @@ async function tests () {
     return fail(`Expected 1 file, got ${files.children.length}`)
   }
 
+  test('The note is not actually deleted from the IDS list')
+  ids = JSON.parse(localStorage.getItem('IDS'))
+  if (ids.length !== 2) {
+    return fail('Found unexpected number of IDS')
+  }
+
+  test('The note is not actually deleted from local storage')
+  const deletedNote = JSON.parse(localStorage.getItem(ids[1]))
+  if (!deletedNote || typeof deletedNote !== 'object') {
+    return fail(`Expected to find note in local storage ${deletedNote}`)
+  }
+  if (!deletedNote.Deleted) {
+    return fail(`Expected not to be deleted ${deletedNote.Deleted}`)
+  }
+
   test('The first note is now active')
   if (!files.children[0].classList.contains('active')) {
     return fail('Expected first file to be active')
@@ -373,10 +388,55 @@ async function tests () {
 
   suite('Data integrity')
 
-  todo('A numerical ID is converted to a UUID in the IDs list')
-  todo('The corresponding numerical ID is converted to a UUID in local storage')
-  todo('The ID in the data is updated to the UUID')
-  todo('The old note ID is saved as a backup')
+  // add a numerical ID to local storage
+  ids.push(1)
+  localStorage.setItem('IDS', JSON.stringify(ids))
+  localStorage.setItem(
+    1,
+    JSON.stringify({
+      Data: 'Numerical ID note',
+      ID: 1,
+      Active: false,
+      Deleted: false
+    })
+  )
+
+  await init()
+
+  test('A numerical ID is converted to a UUID in the IDs list')
+  ids = JSON.parse(localStorage.getItem('IDS'))
+  if (ids.length !== 3) {
+    return fail(`Found unexpected number of ids ${ids.length}`)
+  }
+  for (const id of ids) {
+    if (typeof id !== 'string' || id.length !== 36) {
+      return fail(`Found unexpected id ${id}`)
+    }
+  }
+
+  test('The corresponding numerical ID is converted to a UUID in local storage')
+  for (const id of ids) {
+    if (!localStorage.getItem(id)) {
+      return fail(
+        `Expected to find new ID in local storage ${localStorage.getItem(id)}`
+      )
+    }
+  }
+
+  test('The ID in the data is updated to the UUID')
+  for (const note of notes.list()) {
+    if (typeof note.ID() !== 'string') {
+      return fail(`Found unexpected ID type ${typeof note.ID()}`)
+    }
+    if (note.ID().length !== 36) {
+      return fail(`Found unexpected ID length ${note.ID().length}`)
+    }
+  }
+
+  test('The old note ID is saved as a backup')
+  if (!localStorage.getItem(1)) {
+    return fail(`Expected old note ID to be saved ${localStorage.getItem(1)}`)
+  }
 
   console.log(
     '%c All tests passed',
