@@ -19,3 +19,8 @@ handlers:
     static_files: build.html
     upload: build\.html
     secure: always
+
+  - url: /.*
+    static_files: build.html
+    upload: build\.html
+    secure: always
