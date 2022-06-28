@@ -175,6 +175,32 @@ async function tests () {
     )
   }
 
+  test('Pressing enter on a row with an unordered list continues the list')
+  editor.value = editor.value.slice(0, 419) + '\n' + editor.value.slice(419)
+  editor.selectionStart = editor.selectionEnd = 419
+  editor.dispatchEvent(
+    new InputEvent('input', {
+      data: null,
+      inputType: 'insertLineBreak'
+    })
+  )
+
+  if (!editor.value.includes('\n* Use an asterisk.\n* \n- Or a hyphen.')) {
+    return fail(
+      `Found unexpected list value ${JSON.stringify(
+        editor.value.slice(400, 433)
+      )}`
+    )
+  }
+
+  if (editor.selectionStart !== 421) {
+    return fail(`Found unexpected selectionStart ${editor.selectionStart}`)
+  }
+
+  if (editor.selectionEnd !== 421) {
+    return fail(`Found unexpected selectionEnd ${editor.selectionEnd}`)
+  }
+
   suite('File navigator')
 
   test('There is one file')
