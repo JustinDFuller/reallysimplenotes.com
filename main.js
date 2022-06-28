@@ -13,7 +13,7 @@ async function init () {
     notes = notes.prefill()
   }
 
-  history.pushState({}, '', notes.getActive().url())
+  navigate(notes.getActive().url())
 
   editor.onChange(function (e) {
     notes = notes.set(notes.getActive().update(e.target.value))
@@ -56,16 +56,16 @@ async function init () {
       Active: true,
       Deleted: false
     })
-    history.pushState({}, '', note.url())
+    navigate(note.url())
     notes = notes.add(note)
 
     render()
   }
 
   page.deleteButton().onclick = function (e) {
-    history.pushState({}, '', '/')
+    navigate('/')
     notes = notes.set(notes.getActive().delete())
-    history.pushState({}, '', notes.getActive().url())
+    navigate(notes.getActive().url())
 
     render()
   }

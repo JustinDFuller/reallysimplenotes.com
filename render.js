@@ -20,7 +20,7 @@ function render () {
     }
 
     file.onClick(e => {
-      history.pushState({}, '', note.url())
+      navigate(note.url())
       notes = notes.refresh()
       sidebar.toggle()
       editor.toggle()
