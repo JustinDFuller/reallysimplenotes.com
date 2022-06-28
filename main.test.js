@@ -201,6 +201,32 @@ async function tests () {
     return fail(`Found unexpected selectionEnd ${editor.selectionEnd}`)
   }
 
+  test('Pressing enter on a row with an dashed list continues the list')
+  editor.value = editor.value.slice(0, 437) + '\n' + editor.value.slice(437)
+  editor.selectionStart = editor.selectionEnd = 437
+  editor.dispatchEvent(
+    new InputEvent('input', {
+      data: null,
+      inputType: 'insertLineBreak'
+    })
+  )
+
+  if (!editor.value.includes('\n- Or a hyphen.\n- \n')) {
+    return fail(
+      `Found unexpected list value ${JSON.stringify(
+        editor.value.slice(400, 440)
+      )}`
+    )
+  }
+
+  if (editor.selectionStart !== 439) {
+    return fail(`Found unexpected selectionStart ${editor.selectionStart}`)
+  }
+
+  if (editor.selectionEnd !== 439) {
+    return fail(`Found unexpected selectionEnd ${editor.selectionEnd}`)
+  }
+
   suite('File navigator')
 
   test('There is one file')
