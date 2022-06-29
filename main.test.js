@@ -227,6 +227,70 @@ async function tests () {
     return fail(`Found unexpected selectionEnd ${editor.selectionEnd}`)
   }
 
+  todo('It repeats valid list newlines')
+  const repeatableNewlines = [
+    '* regular list',
+    '- dashed list',
+    '1 numerical list',
+    '1) numerical list',
+    '1- numerical dash',
+    '1. numerical dot',
+    '** double asterisk',
+    '*** triple asterisk',
+    '* tabbed list',
+    '* double tabbed list',
+    '* spaced list',
+    '* more spaces list',
+    '*** more spaces more asterisks',
+    '55555555',
+    '#1 should this match?',
+    '#2 should this match?',
+    '(1) what about this?',
+    '(2) this too',
+    '> should quotes be includes?',
+    '> What about tabbed quotes?',
+    '> what about spaced quotes?'
+  ]
+
+  todo('It does not repeat invalid list newlines')
+  const nonRepeatableNewlines = [
+    'regular text',
+    '*not a space list',
+    '-not a space dashed list',
+    '1not a space numerical list',
+    '1)not a space numerical list',
+    '1-numerical dash no space',
+    '1.numerical dot no space',
+    '**double asterisk no space',
+    '***Triple asterisk no space',
+    '*tabbed list no space',
+    '*double tabbed list no space',
+    '*spaced list no space',
+    '*more spaces list no space',
+    '***more spaces more asterisks no space',
+    '(this should not be matched) but is it?',
+    'f) huh?',
+    'this should not be matched* but is it?',
+    '? what about this',
+    '5 what happens here?',
+    'gee 5 hey',
+    'a. here is thing one',
+    'b. here is thing two',
+    'i. here is sub thing one',
+    'ii. here is sub-thing two',
+    'a) here is another type',
+    'b) here is another type',
+    'a)here is not another type',
+    '(here is not another type)',
+    '(a) (b)',
+    '(b)',
+    '# markdown title',
+    '## markdown title also',
+    '# should not match',
+    '## should not match',
+    'What if I say > is greater than 5 is < less than 3'
+  ]
+
   suite('File navigator')
 
   test('There is one file')
