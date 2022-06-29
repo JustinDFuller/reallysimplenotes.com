@@ -291,6 +291,11 @@ async function tests () {
     'What if I say > is greater than 5 is < less than 3'
   ]
 
+  todo(
+    'When reverse-tabbing a line that begins with a tab, it removes one tab character'
+  )
+  const tabLines = ['\t* untab this', '\t\t* untab this', '\t\t\t* untab this']
+
   suite('File navigator')
 
   test('There is one file')
