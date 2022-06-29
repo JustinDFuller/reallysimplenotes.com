@@ -22,6 +22,8 @@ function Editor (element = page.editor()) {
               }
 
               if (lastLine.endsWith(pattern)) {
+                // TODO: If the last line also beings with spaces or tabs, remove those first.
+
                 this.value =
                   this.value.slice(0, start - pattern.length - 1) +
                   this.value.slice(start)
