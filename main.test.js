@@ -328,10 +328,32 @@ async function tests () {
     }
   }
 
-  todo(
+  test(
     'When reverse-tabbing a line that begins with a tab, it removes one tab character'
   )
-  const tabLines = ['\t* untab this', '\t\t* untab this', '\t\t\t* untab this']
+  const tabLines = [
+    ['\t* untab this', '* untab this'],
+    ['\t\t* untab this', '\t* untab this'],
+    ['\t\t\t* untab this', '\t\t* untab this']
+  ]
+  for (const [l, after] of tabLines) {
+    editor.value += `\n${l}`
+    editor.selectionStart = editor.selectionEnd = editor.value.length
+    editor.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'Tab',
+        code: 'Tab',
+        shiftKey: true
+      })
+    )
+    if (!editor.value.endsWith(after)) {
+      return fail(
+        `Expected shift-tab to create "${after}" got "${
+          editor.value.split('\n')[editor.value.split('\n').length - 1]
+        }"`
+      )
+    }
+  }
 
   suite('File navigator')
 
