@@ -227,32 +227,51 @@ async function tests () {
     return fail(`Found unexpected selectionEnd ${editor.selectionEnd}`)
   }
 
-  todo('It repeats valid list newlines')
+  test('It repeats valid list newlines')
   const repeatableNewlines = [
-    '* regular list',
-    '- dashed list',
-    '1 numerical list',
-    '1) numerical list',
-    '1- numerical dash',
-    '1. numerical dot',
-    '** double asterisk',
-    '*** triple asterisk',
-    '* tabbed list',
-    '* double tabbed list',
-    '* spaced list',
-    '* more spaces list',
-    '*** more spaces more asterisks',
-    '55555555',
-    '#1 should this match?',
-    '#2 should this match?',
-    '(1) what about this?',
-    '(2) this too',
-    '> should quotes be includes?',
-    '> What about tabbed quotes?',
-    '> what about spaced quotes?'
+    ['* regular list', '* '],
+    ['- dashed list', '- '],
+    ['1 numerical list', '2 '],
+    ['1) numerical list', '2) '],
+    ['1- numerical dash', '2- '],
+    ['1. numerical dot', '2. '],
+    ['** double asterisk', '** '],
+    ['*** triple asterisk', '*** '],
+    ['\t* tabbed list', '\t* '],
+    ['\t\t* double tabbed list', '\t\t* '],
+    ['  * spaced list', '  * '],
+    ['    * more spaces list', '    * '],
+    ['    *** more spaces more asterisks', '    *** '],
+    ['#1 should this match?', '#2 '],
+    ['#2 should this match?', '#3 '],
+    ['(1) what about this?', '(2) '],
+    ['(2) this too', '(3) '],
+    ['> should quotes be included?', '> '],
+    ['\t> What about tabbed quotes?', '\t> '],
+    ['  > what about spaced quotes?', '> '],
+    ['5 what happens here?', '6 ']
   ]
 
-  todo('It does not repeat invalid list newlines')
+  for (const [l, next] of repeatableNewlines) {
+    editor.value += `\n${l}\n`
+    editor.selectionStart = editor.selectionEnd = editor.value.length
+    editor.dispatchEvent(
+      new InputEvent('input', {
+        data: null,
+        inputType: 'insertLineBreak'
+      })
+    )
+
+    if (!editor.value.endsWith(next)) {
+      return fail(
+        `Expected new line to be created with "${next}" got "${
+          editor.value.split('\n')[editor.value.split('\n').length - 1]
+        }"`
+      )
+    }
+  }
+
+  test('It does not repeat invalid list newlines')
   const nonRepeatableNewlines = [
     'regular text',
     '*not a space list',
@@ -272,7 +291,6 @@ async function tests () {
     'f) huh?',
     'this should not be matched* but is it?',
     '? what about this',
-    '5 what happens here?',
     'gee 5 hey',
     'a. here is thing one',
     'b. here is thing two',
@@ -288,8 +306,27 @@ async function tests () {
     '## markdown title also',
     '# should not match',
     '## should not match',
-    'What if I say > is greater than 5 is < less than 3'
+    'What if I say > is greater than 5 is < less than 3',
+    '55555555'
   ]
+  for (const l of nonRepeatableNewlines) {
+    editor.value += `\n${l}\n`
+    editor.selectionStart = editor.selectionEnd = editor.value.length
+    editor.dispatchEvent(
+      new InputEvent('input', {
+        data: null,
+        inputType: 'insertLineBreak'
+      })
+    )
+
+    if (!editor.value.endsWith('\n')) {
+      return fail(
+        `Expected new line to be created with "\n" got "${
+          editor.value.split('\n')[editor.value.split('\n').length - 1]
+        }"`
+      )
+    }
+  }
 
   todo(
     'When reverse-tabbing a line that begins with a tab, it removes one tab character'
