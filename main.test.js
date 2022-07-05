@@ -355,6 +355,20 @@ async function tests () {
     }
   }
 
+  todo('Tabbing after a list indents the list')
+  /* editor.value += `\n* `;
+  editor.selectionStart = editor.selectionEnd = editor.value.length;
+  editor.dispatchEvent(
+    new KeyboardEvent('keydown', {
+      key: "Tab",
+      code: "Tab",
+      shiftKey: false,
+    })
+  )
+  if (!editor.value.endsWith("\n\t* ")) {
+    return fail(`Expected shift-tab to create "\n\t* " got "${editor.value.split("\n")[editor.value.split("\n").length - 1]}"`)
+  } */
+
   suite('File navigator')
 
   test('There is one file')
