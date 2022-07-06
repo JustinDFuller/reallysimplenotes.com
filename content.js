@@ -1,4 +1,15 @@
 function Content(event, element) {
+  function previousNewLinePosition() {
+    const start = element.selectionStart
+
+    for (let i = start - 2; i > 0; i--) {
+      if (element.value[i] === '\n') {
+        return i
+      }      
+    }
+    return -1
+  }
+
   return {
     isLineBreak() {
       return event.inputType === 'insertLineBreak'
@@ -7,10 +18,32 @@ function Content(event, element) {
       const start = element.selectionStart
       const end = element.selectionEnd
 
+      let found = false;
+      for (let i = start - 1; i > 0; i--) {
+        if (element.value[i] !== '\n') {
+          continue
+        }
 
-      for (let i = start - 2; i > 0; i--) {
+        if (!found) {
+          found = true
+          continue
+        }
+
+        return Line(element.value.slice(i + 1, start - 1))
+      }
+
+      // If no previous newline is found, assume the editor is on the first line.
+      return Line(element.value)
+
+    },
+    currentLine() {
+      const start = element.selectionStart
+      const end = element.selectionEnd
+
+
+      for (let i = start; i > 0; i--) {
         if (element.value[i] === '\n') {
-          return Line(element.value.slice(i + 1, start - 1))
+          return Line(element.value.slice(i + 1, start))
         }      
       }
 
@@ -44,6 +77,19 @@ function Content(event, element) {
       element.value = str
       element.selectionStart = start + list.length
       element.selectionEnd = end + list.length
-    }
+    },
+    isReverseTabbing() {
+      return event.shiftKey && event.code === 'Tab'
+    },
+    unindentCurrentLine() {
+      const start = element.selectionStart
+      const pos = previousNewLinePosition()
+
+      element.value = element.value.slice(0, pos + 1) + element.value.slice(pos + 2)
+      element.selectionStart = element.selectionEnd = start - 1
+    },
+    value() {
+      return element.value
+    },
   }
 } 

@@ -4,20 +4,7 @@ function Editor (element = page.editor()) {
       element.value = content
     },
     onChange (fn) {
-      element.oninput = function (e) {
-        const c = Content(e, this)
-
-        if (c.isLineBreak()) {
-          const prev = c.previousLine()
-          if (prev.endsWithList()) {
-            c.unindentCurrentList(prev)
-          } else if (prev.isValidList()) {
-            c.repeatPreviousList(prev)
-          }
-        }
-
-        fn(e)
-      }
+      element.oninput = fn
     },
     focus () {
       element.focus()
@@ -27,6 +14,9 @@ function Editor (element = page.editor()) {
     },
     onKeyDown (fn) {
       element.onkeydown = fn
+    },
+    value () {
+      return element.value
     }
   }
 }

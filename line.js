@@ -25,6 +25,9 @@ function Line (str) {
       }
 
       return list
+    },
+    startsWithTab () {
+      return str.startsWith('\t')
     }
   }
 }

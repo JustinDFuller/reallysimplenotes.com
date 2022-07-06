@@ -16,33 +16,36 @@ async function init () {
   navigate(notes.getActive().url())
 
   editor.onChange(function (e) {
+    const c = Content(e, this)
+
+    if (c.isLineBreak()) {
+      const line = c.previousLine()
+      if (line.endsWithList()) {
+        c.unindentCurrentList(line)
+      } else if (line.isValidList()) {
+        c.repeatPreviousList(line)
+      }
+    }
+
     notes = notes.set(notes.getActive().update(e.target.value))
     render()
   })
 
   editor.onKeyDown(function (e) {
-    if (e.shiftKey && e.code === 'Tab') {
+    const c = Content(e, this)
+
+    if (c.isReverseTabbing()) {
       e.preventDefault()
 
-      const start = this.selectionStart
-
-      // Beginning at the the current input, begin looking backward
-      for (let i = start; i > 0; i--) {
-        // stop when you get to the previous newline
-        if (this.value[i] === '\n') {
-          // the last line begins AFTER the previous newline and before the cursor
-          const lastLine = this.value.slice(i + 1, start - 1)
-
-          // if it begins with a tab, remove it from the editor value.
-          if (lastLine.startsWith('\t')) {
-            this.value = this.value.slice(0, i + 1) + this.value.slice(i + 2)
-            this.selectionStart = this.selectionEnd = start - 1
-            notes = notes.set(notes.getActive().update(this.value))
-            return
-          }
-        }
+      const line = c.currentLine()
+      if (!line.startsWithTab()) {
+        return
       }
 
+      c.unindentCurrentLine()
+      notes = notes.set(notes.getActive().update(c.value()))
+
+      /*
       const prev = this.selectionStart - 1
       if (this.value[prev] !== '\t') {
         return
@@ -52,6 +55,7 @@ async function init () {
         this.value.substring(0, prev) + this.value.substring(prev + 1)
       this.selectionStart = this.selectionEnd = prev
       notes = notes.set(notes.getActive().update(e.target.value))
+      */
     } else if (e.code === 'Tab') {
       e.preventDefault()
       const start = this.selectionStart

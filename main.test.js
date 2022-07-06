@@ -346,6 +346,13 @@ async function tests () {
         shiftKey: true
       })
     )
+    if (editor.value.endsWith(l)) {
+      return fail(
+        `Expected shift-tab to create "${after}" got "${
+          editor.value.split('\n')[editor.value.split('\n').length - 1]
+        }"`
+      )
+    }
     if (!editor.value.endsWith(after)) {
       return fail(
         `Expected shift-tab to create "${after}" got "${
@@ -354,6 +361,8 @@ async function tests () {
       )
     }
   }
+
+  todo('Reverse tabbing in the middle of two lines should work too')
 
   todo('Tabbing after a list indents the list')
   /* editor.value += `\n* `;
