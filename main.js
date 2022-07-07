@@ -43,29 +43,18 @@ async function init () {
       }
 
       c.unindentCurrentLine()
-      notes = notes.set(notes.getActive().update(c.value()))
-
-      /*
-      const prev = this.selectionStart - 1
-      if (this.value[prev] !== '\t') {
-        return
-      }
-
-      this.value =
-        this.value.substring(0, prev) + this.value.substring(prev + 1)
-      this.selectionStart = this.selectionEnd = prev
-      notes = notes.set(notes.getActive().update(e.target.value))
-      */
-    } else if (e.code === 'Tab') {
+    } else if (c.isForwardTabbing()) {
       e.preventDefault()
-      const start = this.selectionStart
-      this.value =
-        this.value.substring(0, start) +
-        '\t' +
-        this.value.substring(this.selectionEnd)
-      this.selectionStart = this.selectionEnd = start + 1
-      notes = notes.set(notes.getActive().update(e.target.value))
+
+      const line = c.currentLine()
+      if (line.isValidList()) {
+        c.indentCurrentLine()
+      } else {
+        c.indentCurrentPosition()
+      }
     }
+
+    notes = notes.set(notes.getActive().update(c.value()))
   })
 
   page.sidebarButton().onclick = function (e) {

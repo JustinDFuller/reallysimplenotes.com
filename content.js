@@ -77,6 +77,9 @@ function Content(event, element) {
       element.selectionStart = start + list.length
       element.selectionEnd = end + list.length
     },
+    isForwardTabbing() {
+      return !event.shiftKey && event.code === 'Tab'
+    },
     isReverseTabbing() {
       return event.shiftKey && event.code === 'Tab'
     },
@@ -89,6 +92,21 @@ function Content(event, element) {
     },
     value() {
       return element.value
+    },
+    indentCurrentPosition() {
+      const start = element.selectionStart
+      element.value =
+        element.value.substring(0, start) +
+        '\t' +
+        element.value.substring(element.selectionEnd)
+      element.selectionStart = element.selectionEnd = start + 1
+    },
+    indentCurrentLine() {
+      const start = element.selectionStart
+      const pos = previousNewLinePosition()
+
+      element.value = element.value.slice(0, pos + 1) + "\t" + element.value.slice(pos + 1)
+      element.selectionStart = element.selectionEnd = start + 1
     },
   }
 } 
