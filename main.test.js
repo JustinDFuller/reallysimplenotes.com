@@ -362,7 +362,27 @@ async function tests () {
     }
   }
 
-  todo('Reverse tabbing in the middle of two lines should work too')
+  test('Reverse tabbing in the middle of two lines should work too')
+  editor.value += '\n\t\t* going to untab this one\n\t\t* but not this one'
+  editor.selectionStart = editor.selectionEnd = editor.value.length - 21
+  editor.dispatchEvent(
+    new KeyboardEvent('keydown', {
+      key: 'Tab',
+      code: 'Tab',
+      shiftKey: true
+    })
+  )
+  const after = '\n\t* going to untab this one\n\t\t* but not this one'
+  if (!editor.value.endsWith(after)) {
+    return fail(
+      `Expected shift-tab to create "${JSON.stringify(
+        after
+      )}" got "${JSON.stringify(
+        editor.value.split('\n')[editor.value.split('\n').length - 2] +
+          editor.value.split('\n')[editor.value.split('\n').length - 1]
+      )}"`
+    )
+  }
 
   todo('Tabbing after a list indents the list')
   /* editor.value += `\n* `;

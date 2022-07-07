@@ -40,8 +40,7 @@ function Content(event, element) {
       const start = element.selectionStart
       const end = element.selectionEnd
 
-
-      for (let i = start; i > 0; i--) {
+      for (let i = start - 1; i > 0; i--) {
         if (element.value[i] === '\n') {
           return Line(element.value.slice(i + 1, start))
         }      
