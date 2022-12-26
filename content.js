@@ -88,9 +88,15 @@ function Content (event, element) {
       const start = element.selectionStart
       const pos = previousNewLinePosition()
 
-      element.value =
-        element.value.slice(0, pos + 1) + element.value.slice(pos + 2)
-      element.selectionStart = element.selectionEnd = start - 1
+      if (element.value[pos + 1] === "\t") {
+        element.value =
+          element.value.slice(0, pos + 1) + element.value.slice(pos + 2)
+        element.selectionStart = element.selectionEnd = start - 1
+      } else if (element.value[pos + 1] === " ") {
+        element.value =
+          element.value.slice(0, pos + 1) + element.value.slice(pos + 5)
+        element.selectionStart = element.selectionEnd = start - 1
+      }
     },
     value () {
       return element.value
@@ -108,8 +114,8 @@ function Content (event, element) {
       const pos = previousNewLinePosition()
 
       element.value =
-        element.value.slice(0, pos + 1) + '\t' + element.value.slice(pos + 1)
-      element.selectionStart = element.selectionEnd = start + 1
+        element.value.slice(0, pos + 1) + '    ' + element.value.slice(pos + 1)
+      element.selectionStart = element.selectionEnd = start + 4
     }
   }
 }
