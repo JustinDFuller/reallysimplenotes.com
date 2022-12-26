@@ -2,14 +2,14 @@
   line-height: var(--line-height);
   resize: none;
   display: inline-block;
-  margin: 0 auto;
+  margin: 65px auto;
   border: 0;
   background: var(--background);
   color: var(--color);
   font-size: var(--font-size);
-  padding: 65px calc((100vw - var(--sidebar-width) - var(--editor-width)) / 2);
+  padding: 0 calc((100vw - var(--sidebar-width) - var(--editor-width)) / 2);
   width: 100%;
-  height: 100%;
+  height: calc(100% - 65px - 65px);
   caret-color: orange;
   caret-shape: block;
 }
@@ -27,6 +27,6 @@
     height: calc(100% - var(--nav-height));
     width: 100%;
     margin-top: var(--nav-height);
-    padding: var(--small-spacer) var(--medium-spacer);
+    padding: 0 var(--medium-spacer);
   }
 }
