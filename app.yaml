@@ -1,9 +1,11 @@
-runtime: go119
+runtime: go125
 service: reallysimplenotes
 
 automatic_scaling:
   max_instances: 1
-  max_idle_instances: 1
+  min_instances: 0
+  max_idle_instances: 0
+  min_idle_instances: 0
 
 handlers:
   ## All API requests are prefixed with /v1
