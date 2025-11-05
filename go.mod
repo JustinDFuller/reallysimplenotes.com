@@ -1,6 +1,6 @@
 module github.com/justindfuller/really-simple-notes
 
-go 1.19
+go 1.25
 
 require github.com/tdewolff/minify v2.3.6+incompatible
 
