@@ -26,13 +26,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: "1.21.3"
-
-      - name: "build"
-        run: "timeout 40 .appengine/build.sh"
-
-      - name: "prep"
-        run: "mv .appengine/app.yaml ./"
+          go-version: "1.25.1"
 
       - name: "auth"
         uses: "google-github-actions/auth@v1"
